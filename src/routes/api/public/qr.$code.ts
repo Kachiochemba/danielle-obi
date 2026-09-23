@@ -13,4 +13,4 @@ export const Route = createFileRoute("/api/public/qr/$code")({
       },
     },
   },
-}]);
+});
