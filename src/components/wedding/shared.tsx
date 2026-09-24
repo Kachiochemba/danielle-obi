@@ -20,7 +20,7 @@ export const revealTiming = {
   bands: { delay: 0.34, duration: 0.46 },
   stage: { delay: 0.12, duration: 0.42 },
   flap: { delay: 0.34, duration: 0.5 },
-  letter: { delay: 0.78, duration: 0.42 },
+  letter: { delay: 0.85, duration: 0.42 },
   collage: { delay: 1.2, duration: 0.38 },
   particleDuration: 2.9,
   particleDelayScale: 0.5,
