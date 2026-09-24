@@ -1,8 +1,8 @@
 import { ExternalLink, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import cathedralMap from "@/assets/cathedral-map-enhanced.png";
 import { wedding } from "@/data/wedding";
 import { Reveal, SectionTitle } from "./shared";
-import cathedralMap from "@/assets/cathedral-map-enhanced.png";
 
 export function Venue() {
   const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(wedding.venue.mapQuery)}`;
