@@ -58,12 +58,12 @@ export const wedding = {
     { title: "Still Writing", image: "story-4.jpg", text: "This time the story is no longer about two people wondering where life will take them; it's about two people who have decided to take this journey together. Whatever comes next, we know we want to be beside each other, and this time we get to write the rest of the story together." },
   ],
   gallery: [
-    { file: "gallery-1.jpg", alt: "Danielle and Obi, photo 1" },
-    { file: "gallery-2.jpg", alt: "Danielle and Obi, photo 2" },
-    { file: "gallery-3.jpg", alt: "Danielle and Obi, photo 3" },
-    { file: "gallery-4.jpg", alt: "Danielle and Obi, photo 4" },
-    { file: "gallery-5.jpg", alt: "Danielle and Obi, photo 5" },
-    { file: "gallery-6.jpg", alt: "Danielle and Obi, photo 6" },
+    { file: "gallery-1.jpg", alt: "Danielle and Obi in red and gold traditional attire" },
+    { file: "gallery-2.jpg", alt: "Danielle smiling through Obi's hands" },
+    { file: "gallery-3.jpg", alt: "Danielle and Obi holding hands in traditional attire" },
+    { file: "gallery-4.jpg", alt: "Danielle and Obi in elegant black attire beside a wooden bench" },
+    { file: "gallery-5.jpg", alt: "Danielle and Obi smiling together in elegant black attire" },
+    { file: "gallery-6.jpg", alt: "Danielle and Obi seated together in elegant black attire" },
   ],
   gifts: [
     { icon: "bank", title: "A Little Blessing", text: "Bank transfer details will be shared here by the couple." },

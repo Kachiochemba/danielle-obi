@@ -1,32 +1,60 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ImageIcon } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ImageIcon, X } from "lucide-react";
 import { wedding } from "@/data/wedding";
 import { getPhotoUrls } from "@/lib/photos.functions";
 import { Reveal, SectionTitle } from "./shared";
 
-function Photo({ url, loading, alt, label, className = "" }: { url?: string | undefined; loading: boolean; alt: string; label: string; className?: string }) {
+function GalleryPhoto({ url, loading, alt, label, onOpen }: { url?: string | undefined; loading: boolean; alt: string; label: string; onOpen: (item: { url: string; alt: string }) => void }) {
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
   const showImage = url && !failed;
-  return <div className={`relative overflow-hidden border border-gold/25 bg-cream ${className}`}>
+  return <div className="relative aspect-[3/4] overflow-hidden border border-gold/25 bg-cream">
     {(loading || (showImage && !loaded)) && <div className="absolute inset-0 animate-pulse bg-gold/10" aria-hidden />}
     {showImage
-      ? <img src={url} alt={alt} loading="lazy" onLoad={() => setLoaded(true)} onError={() => setFailed(true)} className={`h-full w-full object-cover transition-opacity duration-700 ${loaded ? "opacity-100" : "opacity-0"}`} />
+      ? loaded
+        ? <button type="button" onClick={() => onOpen({ url, alt })} aria-label={`View larger: ${alt}`} className="block h-full w-full cursor-zoom-in"><img src={url} alt={alt} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" /></button>
+        : <img src={url} alt="" loading="lazy" onLoad={() => setLoaded(true)} onError={() => setFailed(true)} className="h-full w-full object-cover opacity-0" />
       : !loading && <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-muted-label"><ImageIcon className="size-6 text-gold" strokeWidth={1.3} /><span className="eyebrow text-[10px]">PHOTO COMING SOON</span><span className="text-[10px] opacity-70">{label}</span></div>}
   </div>;
+}
+
+function Lightbox({ item, onClose }: { item: { url: string; alt: string } | null; onClose: () => void }) {
+  const closeRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!item) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeRef.current?.focus();
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [item, onClose]);
+  return <AnimatePresence>
+    {item && <motion.div className="fixed inset-0 z-[70] flex items-center justify-center bg-wine-deep/95 p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} role="dialog" aria-modal="true" aria-label={item.alt}>
+      <motion.img key={item.url} src={item.url} alt={item.alt} className="max-h-full max-w-full rounded-sm object-contain shadow-2xl" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.97 }} transition={{ duration: 0.25, ease: "easeOut" }} onClick={(e) => e.stopPropagation()} />
+      <button ref={closeRef} type="button" onClick={onClose} aria-label="Close photo" className="absolute right-4 flex size-11 items-center justify-center rounded-full border border-gold/40 bg-background/80 text-gold" style={{ top: "max(1rem, env(safe-area-inset-top))" }}><X className="size-5" strokeWidth={1.5} /></button>
+ </motion.div>}
+  </AnimatePresence>;
 }
 
 export function Story() {
   const { data, isLoading } = useQuery({ queryKey: ["wedding-photos"], queryFn: () => getPhotoUrls(), staleTime: 1000 * 60 * 60 });
   const urls = data?.urls ?? {};
+  const [lightbox, setLightbox] = useState<{ url: string; alt: string } | null>(null);
+  const closeLightbox = useCallback(() => setLightbox(null), []);
   return <div className="bg-background px-5 py-20">
     <div className="mx-auto max-w-2xl">
       <Reveal><SectionTitle eyebrow="OUR JOURNEY" title="The Love Story" subtitle="Every chapter led us here" /></Reveal>
-      <div className="space-y-4">{wedding.story.map((item, i) => <Reveal key={item.title} delay={i * 0.1}><article className="grid grid-cols-[48px_1fr] gap-5 border-b border-gold/25 py-7"><p className="font-serif text-xl italic text-gold">{String(i + 1).padStart(2, "0")}</p><div><p className="eyebrow text-muted-label">CHAPTER {String(i + 1).padStart(2, "0")}</p><h3 className="mt-2 font-serif text-2xl text-wine">{item.title}</h3><Photo url={urls[item.image]} loading={isLoading} alt={`${item.title}, Danielle and Obi`} label={item.image} className="mt-4 aspect-[4/3]" /><p className="mt-4 text-sm leading-7 text-foreground/70">{item.text}</p></div></article></Reveal>)}</div>
+      <div className="space-y-4">{wedding.story.map((item, i) => <Reveal key={item.title} delay={i * 0.1}><article className="grid grid-cols-[48px_1fr] gap-5 border-b border-gold/25 py-7"><p className="font-serif text-xl italic text-gold">{String(i + 1).padStart(2, "0")}</p><div><p className="eyebrow text-muted-label">CHAPTER {String(i + 1).padStart(2, "0")}</p><h3 className="mt-2 font-serif text-2xl text-wine">{item.title}</h3><p className="mt-4 text-sm leading-7 text-foreground/70">{item.text}</p></div></article></Reveal>)}</div>
       <Reveal><div className="mt-14"><p className="eyebrow text-center text-muted-label">MOMENTS</p><h3 className="mt-2 text-center font-serif text-3xl text-wine">Our Gallery</h3>
-        <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3">{wedding.gallery.map((g, i) => <Photo key={g.file} url={urls[g.file]} loading={isLoading} alt={g.alt} label={g.file} className={i % 3 === 0 ? "aspect-[3/4]" : "aspect-square"} />)}</div>
+        <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3">{wedding.gallery.map((g) => <GalleryPhoto key={g.file} url={urls[g.file]} loading={isLoading} alt={g.alt} label={g.file} onOpen={setLightbox} />)}</div>
       </div></Reveal>
+      <Lightbox item={lightbox} onClose={closeLightbox} />
     </div>
   </div>;
 }
