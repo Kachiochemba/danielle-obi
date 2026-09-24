@@ -191,7 +191,10 @@ export function EnvelopeGate({ phase, onToggle, sealRef }: { phase: GatePhase; o
                 : { rotateX: 0, zIndex: 4 }}
             transition={{ ...envelopeTransition("flap", opening), times: [0, 0.49, 0.51, 1] }}
           >
-            <div className="lace-trim absolute inset-0" />
+            <div className="envelope-flap-face envelope-flap-front">
+              <div className="lace-trim absolute inset-0" />
+            </div>
+            <div className="envelope-flap-face envelope-flap-back" />
           </motion.div>
           <div className="envelope-pocket absolute inset-0 z-[5]">
             <span className="flat-card-line absolute inset-x-12 bottom-8 h-px" />
