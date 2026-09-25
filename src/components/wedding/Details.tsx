@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { wedding } from "@/data/wedding";
 import { CulturalDivider, iconMap, Reveal, SectionTitle } from "./shared";
-import ceremonyImage from "@/assets/danielle-obi-portrait.jpg.asset.json";
+import ceremonyImage from "@/assets/danielle-obi-hero.jpg";
 
 const calendarTitle = `${wedding.couple.bride} & ${wedding.couple.groom}: Wedding Ceremony`;
 const calendarLocation = `${wedding.venue.name}, ${wedding.venue.short}`;
@@ -53,7 +53,7 @@ function CalendarAction() {
 export function Details() {
   return <div className="bg-surface pb-20">
     <div className="relative mx-auto aspect-[4/3] max-h-[560px] w-full overflow-hidden">
-      <img src={ceremonyImage.url} alt="Danielle and Obi forehead to forehead on their wedding day" loading="lazy" width={1066} height={1280} className="h-full w-full object-cover" />
+      <img src={ceremonyImage} alt="Danielle and Obi forehead to forehead on their wedding day" loading="lazy" width={1066} height={1280} className="h-full w-full object-cover" />
       <div className="absolute inset-0 bg-image-shade" /><p className="absolute inset-x-5 bottom-10 text-center font-serif text-3xl italic text-cream">Two Hearts, One Throne</p>
     </div>
     <div className="mx-auto max-w-3xl px-5 pt-16 md:px-8 md:pt-20">

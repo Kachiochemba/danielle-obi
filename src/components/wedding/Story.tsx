@@ -1,22 +1,31 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
-import { ImageIcon, X } from "lucide-react";
+import { X } from "lucide-react";
 import { wedding } from "@/data/wedding";
-import { getPhotoUrls } from "@/lib/photos.functions";
 import { Reveal, SectionTitle } from "./shared";
+import galleryPhoto1 from "@/assets/gallery/gallery-1.jpg";
+import galleryPhoto2 from "@/assets/gallery/gallery-2.jpg";
+import galleryPhoto3 from "@/assets/gallery/gallery-3.jpg";
+import galleryPhoto4 from "@/assets/gallery/gallery-4.jpg";
+import galleryPhoto5 from "@/assets/gallery/gallery-5.jpg";
+import galleryPhoto6 from "@/assets/gallery/gallery-6.jpg";
 
-function GalleryPhoto({ url, loading, alt, label, onOpen }: { url?: string | undefined; loading: boolean; alt: string; label: string; onOpen: (item: { url: string; alt: string }) => void }) {
+const galleryPhotos: Record<string, string> = {
+  "gallery-1.jpg": galleryPhoto1,
+  "gallery-2.jpg": galleryPhoto2,
+  "gallery-3.jpg": galleryPhoto3,
+  "gallery-4.jpg": galleryPhoto4,
+  "gallery-5.jpg": galleryPhoto5,
+  "gallery-6.jpg": galleryPhoto6,
+};
+
+function GalleryPhoto({ url, alt, onOpen }: { url: string; alt: string; onOpen: (item: { url: string; alt: string }) => void }) {
   const [loaded, setLoaded] = useState(false);
-  const [failed, setFailed] = useState(false);
-  const showImage = url && !failed;
   return <div className="relative aspect-[3/4] overflow-hidden border border-gold/25 bg-cream">
-    {(loading || (showImage && !loaded)) && <div className="absolute inset-0 animate-pulse bg-gold/10" aria-hidden />}
-    {showImage
-      ? loaded
-        ? <button type="button" onClick={() => onOpen({ url, alt })} aria-label={`View larger: ${alt}`} className="block h-full w-full cursor-zoom-in"><img src={url} alt={alt} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" /></button>
-        : <img src={url} alt="" loading="lazy" onLoad={() => setLoaded(true)} onError={() => setFailed(true)} className="h-full w-full object-cover opacity-0" />
-      : !loading && <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-muted-label"><ImageIcon className="size-6 text-gold" strokeWidth={1.3} /><span className="eyebrow text-[10px]">PHOTO COMING SOON</span><span className="text-[10px] opacity-70">{label}</span></div>}
+    {!loaded && <div className="absolute inset-0 animate-pulse bg-gold/10" aria-hidden />}
+    <button type="button" onClick={() => onOpen({ url, alt })} aria-label={`View larger: ${alt}`} className="block h-full w-full cursor-zoom-in">
+      <img src={url} alt={alt} loading="lazy" onLoad={() => setLoaded(true)} className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" />
+    </button>
   </div>;
 }
 
@@ -43,8 +52,6 @@ function Lightbox({ item, onClose }: { item: { url: string; alt: string } | null
 }
 
 export function Story() {
-  const { data, isLoading } = useQuery({ queryKey: ["wedding-photos"], queryFn: () => getPhotoUrls(), staleTime: 1000 * 60 * 60 });
-  const urls = data?.urls ?? {};
   const [lightbox, setLightbox] = useState<{ url: string; alt: string } | null>(null);
   const closeLightbox = useCallback(() => setLightbox(null), []);
   return <div className="bg-background px-5 py-20">
@@ -52,7 +59,7 @@ export function Story() {
       <Reveal><SectionTitle eyebrow="OUR JOURNEY" title="The Love Story" subtitle="Every chapter led us here" /></Reveal>
       <div className="space-y-4">{wedding.story.map((item, i) => <Reveal key={item.title} delay={i * 0.1}><article className="grid grid-cols-[48px_1fr] gap-5 border-b border-gold/25 py-7"><p className="font-serif text-xl italic text-gold">{String(i + 1).padStart(2, "0")}</p><div><p className="eyebrow text-muted-label">CHAPTER {String(i + 1).padStart(2, "0")}</p><h3 className="mt-2 font-serif text-2xl text-wine">{item.title}</h3><p className="mt-4 text-sm leading-7 text-foreground/70">{item.text}</p></div></article></Reveal>)}</div>
       <Reveal><div className="mt-14"><p className="eyebrow text-center text-muted-label">MOMENTS</p><h3 className="mt-2 text-center font-serif text-3xl text-wine">Our Gallery</h3>
-        <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3">{wedding.gallery.map((g) => <GalleryPhoto key={g.file} url={urls[g.file]} loading={isLoading} alt={g.alt} label={g.file} onOpen={setLightbox} />)}</div>
+        <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3">{wedding.gallery.map((g) => <GalleryPhoto key={g.file} url={galleryPhotos[g.file]!} alt={g.alt} onOpen={setLightbox} />)}</div>
       </div></Reveal>
       <Lightbox item={lightbox} onClose={closeLightbox} />
     </div>

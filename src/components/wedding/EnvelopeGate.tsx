@@ -2,9 +2,9 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { wedding } from "@/data/wedding";
 import { closeDuration, closeTimeScale, closingTiming, easeOut, revealTiming } from "./shared";
-import collagePhoto1 from "@/assets/danielle-obi-collage-1.png.asset.json";
-import collagePhoto2 from "@/assets/danielle-obi-collage-2.png.asset.json";
-import collagePhoto3 from "@/assets/danielle-obi-collage-3.png.asset.json";
+import collagePhoto1 from "@/assets/gallery/gallery-1.jpg";
+import collagePhoto2 from "@/assets/gallery/gallery-3.jpg";
+import collagePhoto3 from "@/assets/gallery/gallery-5.jpg";
 
 export type GatePhase = "folded" | "opening" | "open" | "closing";
 
@@ -166,16 +166,16 @@ export function EnvelopeGate({ phase, onToggle, sealRef }: { phase: GatePhase; o
           <motion.div className="env-collage absolute" initial={closing ? { y: -132 } : false} animate={{ y: opened ? -132 : 32 }} transition={envelopeTransition("letter", opening)}>
             <motion.span className="collage-lace" {...collagePiece(0, opening, closing)} />
             <motion.figure className="collage-photo" {...collagePiece(1, opening, closing)}>
-              <img src={collagePhoto1.url} alt="" loading="lazy" width={606} height={809} />
+              <img src={collagePhoto1} alt="" loading="lazy" width={606} height={809} />
             </motion.figure>
             <motion.div className="collage-arch" {...collagePiece(2, opening, closing)}>
               <span className="font-script text-2xl leading-tight text-wine">{wedding.gate.saveLine}<br/>{wedding.gate.saveWord}</span>
             </motion.div>
             <motion.figure className="collage-photo" {...collagePiece(3, opening, closing)}>
-              <img src={collagePhoto2.url} alt="" loading="lazy" width={635} height={796} />
+              <img src={collagePhoto2} alt="" loading="lazy" width={635} height={796} />
             </motion.figure>
             <motion.figure className="collage-photo" {...collagePiece(4, opening, closing)}>
-              <img src={collagePhoto3.url} alt="" loading="lazy" width={642} height={800} />
+              <img src={collagePhoto3} alt="" loading="lazy" width={642} height={800} />
             </motion.figure>
             <motion.div className="collage-medallion" {...collagePiece(5, opening, closing)}>
               <span>{wedding.gate.medallion.map((line) => <span key={line}>{line}</span>)}</span>
