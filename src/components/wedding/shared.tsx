@@ -9,22 +9,24 @@ export const iconMap = { map: MapPin, calendar: CalendarDays, clock: Clock3, par
 
 export const revealTiming = {
   total: 3.0,
-  // Reveal the keepsake early, hold it, then hand off softly to the invitation.
-  card: { delay: 2.2, duration: 0.8 },
-  seal: { delay: 0.15, duration: 0.2 },
-  caption: { delay: 0.03, duration: 0.18 },
-  heading: { delay: 0.15, duration: 0.28 },
-  knot: { delay: 0.08, duration: 0.3 },
-  loops: { delay: 0.14, duration: 0.4 },
-  tails: { delay: 0.24, duration: 0.42 },
-  bands: { delay: 0.34, duration: 0.46 },
-  stage: { delay: 0.12, duration: 0.42 },
-  flap: { delay: 0.34, duration: 0.5 },
-  letter: { delay: 0.85, duration: 0.42 },
-  collage: { delay: 1.2, duration: 0.38 },
+  // Physical envelope order: seal and bow loosen, flap hinges fully open,
+  // then the keepsake rises and fans out, and is held before the handoff.
+  card: { delay: 2.35, duration: 0.65 },
+  seal: { delay: 0.1, duration: 0.2 },
+  caption: { delay: 0.02, duration: 0.16 },
+  heading: { delay: 0.12, duration: 0.24 },
+  knot: { delay: 0.04, duration: 0.22 },
+  loops: { delay: 0.1, duration: 0.26 },
+  tails: { delay: 0.16, duration: 0.28 },
+  bands: { delay: 0.2, duration: 0.3 },
+  stage: { delay: 0.1, duration: 0.4 },
+  flap: { delay: 0.32, duration: 0.72 },
+  letter: { delay: 1.06, duration: 0.56 },
+  collage: { delay: 1.22, duration: 0.52 },
   particleDuration: 2.9,
   particleDelayScale: 0.5,
 } as const;
+
 
 export const closeDuration = 2.8;
 export const closeTimeScale = closeDuration / revealTiming.total;
