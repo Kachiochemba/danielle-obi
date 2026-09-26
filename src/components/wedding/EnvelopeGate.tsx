@@ -111,7 +111,12 @@ function CornerBow({ opening, closing }: { opening: boolean; closing: boolean })
 
 function envelopeTransition(key: "stage" | "flap" | "letter" | "collage", opening: boolean, extra = 0) {
   const { delay, duration } = revealTiming[key];
-  const closing = closingTiming(delay, duration);
+  const closing = {
+    stage: { delay: 2.24, duration: 0.38 },
+    collage: { delay: 0.58, duration: 0.44 },
+    letter: { delay: 1.05, duration: 0.54 },
+    flap: { delay: 1.64, duration: 0.68 },
+  }[key];
   return {
     duration: opening ? duration : closing.duration,
     delay: (opening ? delay : closing.delay) + (opening ? extra : extra * closeTimeScale),
@@ -163,7 +168,7 @@ export function EnvelopeGate({ phase, onToggle, sealRef }: { phase: GatePhase; o
       <motion.div className="flat-stage relative mt-9" initial={closing ? { rotateX: -4, rotateY: 3, scale: 1.02 } : false} animate={{ rotateX: opened ? -4 : 0, rotateY: opened ? 3 : 0, scale: opened ? 1.02 : 1 }} transition={envelopeTransition("stage", opening)}>
         <div className="envelope-object absolute inset-x-0 bottom-0" aria-hidden="true">
           <div className="envelope-back absolute inset-0"><div className="envelope-lining absolute inset-0" /></div>
-          <motion.div className="env-collage absolute" initial={closing ? { y: -132 } : false} animate={{ y: opened ? -132 : 32 }} transition={envelopeTransition("letter", opening)}>
+          <motion.div className="env-collage absolute" initial={closing ? { y: -132, zIndex: 3 } : false} animate={{ y: opened ? -132 : 32, zIndex: 3 }} transition={envelopeTransition("letter", opening)}>
             <motion.span className="collage-lace" {...collagePiece(0, opening, closing)} />
             <motion.figure className="collage-photo" {...collagePiece(1, opening, closing)}>
               <img src={collagePhoto1} alt="" loading="lazy" width={606} height={809} />
@@ -191,10 +196,7 @@ export function EnvelopeGate({ phase, onToggle, sealRef }: { phase: GatePhase; o
                 : { rotateX: 0, zIndex: 4 }}
             transition={{ ...envelopeTransition("flap", opening), times: [0, 0.49, 0.51, 1] }}
           >
-            <div className="envelope-flap-face envelope-flap-front">
-              <div className="lace-trim absolute inset-0" />
-            </div>
-            <div className="envelope-flap-face envelope-flap-back" />
+            <div className="lace-trim absolute inset-0" />
           </motion.div>
           <div className="envelope-pocket absolute inset-0 z-[5]">
             <span className="flat-card-line absolute inset-x-12 bottom-8 h-px" />

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { wedding } from "@/data/wedding";
 import { CulturalDivider, iconMap, Reveal, SectionTitle } from "./shared";
-import ceremonyImage from "@/assets/danielle-obi-hero.jpg";
+import ceremonyImage from "@/assets/gallery/gallery-4.jpg";
 
 const calendarTitle = `${wedding.couple.bride} & ${wedding.couple.groom}: Wedding Ceremony`;
 const calendarLocation = `${wedding.venue.name}, ${wedding.venue.short}`;
