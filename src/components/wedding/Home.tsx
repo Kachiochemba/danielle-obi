@@ -72,7 +72,9 @@ export function Home() {
   const revealed = phase === "open" || phase === "opening";
   const closeAvailable = phase === "opening" || phase === "open";
   const { delay, duration } = revealTiming.card;
-  const closeTransition = closingTiming(delay, duration);
+  // On close, fade the invitation out immediately so the envelope sequence is fully visible.
+  const closeTransition = { delay: 0, duration: 0.3 };
+  void closingTiming;
   return <main className="overflow-clip pb-28 md:pb-10 md:pt-16">
     <AnimatePresence>{phase !== "open" && <EnvelopeGate key={`gate-${sequenceId}`} phase={phase} onToggle={toggleGate} sealRef={sealRef}/>}</AnimatePresence>
     <motion.div
