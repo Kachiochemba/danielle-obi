@@ -173,7 +173,7 @@
 .gate { isolation:isolate; }
 .gate-bg { background:radial-gradient(120% 90% at 50% 0%,color-mix(in oklab,var(--wine) 84%,var(--cream)) 0%,var(--wine-deep) 72%); }
 .flat-stage { width:min(82vw,318px); height:310px; perspective:1200px; transform-style:preserve-3d; }
-.envelope-object { bottom:0; height:224px; perspective:1000px; transform-style:preserve-3d; pointer-events:none; filter:drop-shadow(0 22px 24px color-mix(in oklab,#000 34%,transparent)); }
+.envelope-object { bottom:0; height:224px; perspective:1000px; transform-style:flat; pointer-events:none; filter:drop-shadow(0 22px 24px color-mix(in oklab,#000 34%,transparent)); }
 .envelope-back { z-index:0; overflow:hidden; border-radius:4px; background:linear-gradient(160deg,color-mix(in oklab,var(--cream) 88%,var(--background)),color-mix(in oklab,var(--cream) 76%,var(--gold))); backface-visibility:hidden; }
 .envelope-lining { opacity:.65; background-image:radial-gradient(circle at center,color-mix(in oklab,var(--gold) 42%,transparent) 0 1.2px,transparent 1.8px),linear-gradient(135deg,transparent 46%,color-mix(in oklab,var(--wine) 8%,transparent) 47% 49%,transparent 50%); background-size:15px 15px,30px 30px; }
 .envelope-flap { height:78%; background:linear-gradient(170deg,color-mix(in oklab,var(--cream) 94%,var(--background)),color-mix(in oklab,var(--cream) 82%,var(--gold))); clip-path:polygon(0 0,100% 0,50% 78%); transform-origin:50% 0%; transform-style:preserve-3d; will-change:transform; box-shadow:0 1px 0 color-mix(in oklab,var(--wine) 18%,transparent); }

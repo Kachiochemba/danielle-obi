@@ -113,9 +113,8 @@ function envelopeTransition(key: "stage" | "flap" | "letter" | "collage", openin
   const { delay, duration } = revealTiming[key];
   const closing = {
     stage: { delay: 2.24, duration: 0.38 },
-    // Retract the keepsake as its pieces gather. Keeping these movements
-    // together prevents the photos from stacking in midair above the pocket.
-    collage: { delay: 0.78, duration: 0.52 },
+    // Keep the fan arranged while it slides into the pocket; fade only at the end.
+    collage: { delay: 1.08, duration: 0.32 },
     letter: { delay: 0.58, duration: 0.82 },
     flap: { delay: 1.64, duration: 0.68 },
   }[key];
@@ -137,11 +136,13 @@ const collagePieces = [
 
 function collagePiece(index: number, opening: boolean, closing: boolean) {
   const piece = collagePieces[index]!;
-  const shut = { x: 0, y: 10, z: 0, rotate: 0, scale: 0.88, opacity: 0 };
-  const open = { ...piece.open, opacity: 1 };
+  const { z: layer, ...position } = piece.open;
+  const shut = { x: 0, y: 10, rotate: 0, scale: 0.88, opacity: 0 };
+  const open = { ...position, opacity: 1 };
   return {
+    style: { zIndex: layer },
     initial: closing ? open : shut,
-    animate: opening ? open : shut,
+    animate: opening ? open : closing ? { ...open, opacity: 0 } : shut,
     transition: envelopeTransition("collage", opening, opening ? index * 0.035 : 0),
   };
 }
@@ -170,7 +171,8 @@ export function EnvelopeGate({ phase, onToggle, sealRef }: { phase: GatePhase; o
       <motion.div className="flat-stage relative mt-9" initial={closing ? { rotateX: -4, rotateY: 3, scale: 1.02 } : false} animate={{ rotateX: opened ? -4 : 0, rotateY: opened ? 3 : 0, scale: opened ? 1.02 : 1 }} transition={envelopeTransition("stage", opening)}>
         <div className="envelope-object absolute inset-x-0 bottom-0" aria-hidden="true">
           <div className="envelope-back absolute inset-0"><div className="envelope-lining absolute inset-0" /></div>
-          <motion.div className="env-collage absolute" initial={closing ? { y: -132, zIndex: 3 } : false} animate={{ y: opened ? -132 : 32, zIndex: 3 }} transition={envelopeTransition("letter", opening)}>
+          <div className="absolute inset-0 z-[3]" style={{ clipPath: "inset(-320px -100px 0)" }}>
+          <motion.div className="env-collage absolute" initial={closing ? { y: -132 } : false} animate={{ y: opened ? -132 : 32 }} transition={envelopeTransition("letter", opening)}>
             <motion.span className="collage-lace" {...collagePiece(0, opening, closing)} />
             <motion.figure className="collage-photo" {...collagePiece(1, opening, closing)}>
               <img src={collagePhoto1} alt="" loading="lazy" width={606} height={809} />
@@ -188,14 +190,16 @@ export function EnvelopeGate({ phase, onToggle, sealRef }: { phase: GatePhase; o
               <span>{wedding.gate.medallion.map((line) => <span key={line}>{line}</span>)}</span>
             </motion.div>
           </motion.div>
+          </div>
           <motion.div
             className="envelope-flap absolute inset-x-0 top-0"
-            initial={closing ? { rotateX: 180, zIndex: 1 } : false}
+            style={{ zIndex: opened || closing ? 1 : 4 }}
+            initial={closing ? { rotateX: 180 } : false}
             animate={opening || phase === "open"
-              ? { rotateX: [0, 88, 92, 180], zIndex: [4, 4, 1, 1] }
+              ? { rotateX: [0, 88, 92, 180] }
               : closing
-                ? { rotateX: [180, 92, 88, 0], zIndex: [1, 1, 4, 4] }
-                : { rotateX: 0, zIndex: 4 }}
+                ? { rotateX: [180, 92, 88, 0] }
+                : { rotateX: 0 }}
             transition={{ ...envelopeTransition("flap", opening), times: [0, 0.49, 0.51, 1] }}
           >
             <div className="lace-trim absolute inset-0" />

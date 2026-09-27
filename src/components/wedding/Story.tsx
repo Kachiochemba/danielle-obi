@@ -9,6 +9,9 @@ import galleryPhoto3 from "@/assets/gallery/gallery-3.jpg";
 import galleryPhoto4 from "@/assets/gallery/gallery-4.jpg";
 import galleryPhoto5 from "@/assets/gallery/gallery-5.jpg";
 import galleryPhoto6 from "@/assets/gallery/gallery-6.jpg";
+import galleryPhoto7 from "@/assets/gallery/gallery-7.jpg";
+import galleryPhoto8 from "@/assets/gallery/gallery-8.jpg";
+import galleryPhoto9 from "@/assets/gallery/gallery-9.jpg";
 
 const galleryPhotos: Record<string, string> = {
   "gallery-1.jpg": galleryPhoto1,
@@ -17,14 +20,22 @@ const galleryPhotos: Record<string, string> = {
   "gallery-4.jpg": galleryPhoto4,
   "gallery-5.jpg": galleryPhoto5,
   "gallery-6.jpg": galleryPhoto6,
+  "gallery-7.jpg": galleryPhoto7,
+  "gallery-8.jpg": galleryPhoto8,
+  "gallery-9.jpg": galleryPhoto9,
 };
 
 function GalleryPhoto({ url, alt, onOpen }: { url: string; alt: string; onOpen: (item: { url: string; alt: string }) => void }) {
   const [loaded, setLoaded] = useState(false);
+  const imageRef = useRef<HTMLImageElement>(null);
+  useEffect(() => {
+    // Cached images can finish loading before React attaches the load handler.
+    setLoaded(Boolean(imageRef.current?.complete && imageRef.current.naturalWidth));
+  }, [url]);
   return <div className="relative aspect-[3/4] overflow-hidden border border-gold/25 bg-cream">
-    {!loaded && <div className="absolute inset-0 animate-pulse bg-gold/10" aria-hidden />}
+    {!loaded && <div className="pointer-events-none absolute inset-0 animate-pulse bg-gold/10" aria-hidden />}
     <button type="button" onClick={() => onOpen({ url, alt })} aria-label={`View larger: ${alt}`} className="block h-full w-full cursor-zoom-in">
-      <img src={url} alt={alt} loading="lazy" onLoad={() => setLoaded(true)} className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" />
+      <img ref={imageRef} src={url} alt={alt} loading="lazy" onLoad={() => setLoaded(true)} className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" />
     </button>
   </div>;
 }
