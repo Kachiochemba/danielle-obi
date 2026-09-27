@@ -1,3 +1,8 @@
 {
-  "name": "danielle-obi"
+  "name": "danielle-obi",
+  "vars": {
+    "SUPABASE_URL": "https://hfzgoigvczhlpmpktphk.supabase.co",
+    "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_KVGI1bFQaKxyMmeE-plweg_nlBf1M4p",
+    "SUPABASE_PROJECT_ID": "hfzgoigvczhlpmpktphk"
+  }
 }
