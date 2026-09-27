@@ -63,10 +63,7 @@ export const wedding = {
     { file: "gallery-3.jpg", alt: "Danielle and Obi holding hands in traditional attire" },
     { file: "gallery-4.jpg", alt: "Danielle and Obi in elegant black attire beside a wooden bench" },
     { file: "gallery-5.jpg", alt: "Danielle and Obi smiling together in elegant black attire" },
-    { file: "gallery-6.jpg", alt: "Danielle and Obi seated together in elegant black attire" },
     { file: "gallery-7.jpg", alt: "Danielle resting her hand on Obi's shoulder as they smile" },
-    { file: "gallery-8.jpg", alt: "Danielle and Obi touching foreheads in black traditional attire" },
-    { file: "gallery-9.jpg", alt: "Danielle and Obi posing together on a wooden bench" },
   ],
   gifts: [
     { icon: "bank", title: "A Little Blessing", text: "Bank transfer details will be shared here by the couple." },

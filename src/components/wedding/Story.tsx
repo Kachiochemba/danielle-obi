@@ -8,10 +8,7 @@ import galleryPhoto2 from "@/assets/gallery/gallery-2.jpg";
 import galleryPhoto3 from "@/assets/gallery/gallery-3.jpg";
 import galleryPhoto4 from "@/assets/gallery/gallery-4.jpg";
 import galleryPhoto5 from "@/assets/gallery/gallery-5.jpg";
-import galleryPhoto6 from "@/assets/gallery/gallery-6.jpg";
 import galleryPhoto7 from "@/assets/gallery/gallery-7.jpg";
-import galleryPhoto8 from "@/assets/gallery/gallery-8.jpg";
-import galleryPhoto9 from "@/assets/gallery/gallery-9.jpg";
 
 const galleryPhotos: Record<string, string> = {
   "gallery-1.jpg": galleryPhoto1,
@@ -19,10 +16,7 @@ const galleryPhotos: Record<string, string> = {
   "gallery-3.jpg": galleryPhoto3,
   "gallery-4.jpg": galleryPhoto4,
   "gallery-5.jpg": galleryPhoto5,
-  "gallery-6.jpg": galleryPhoto6,
   "gallery-7.jpg": galleryPhoto7,
-  "gallery-8.jpg": galleryPhoto8,
-  "gallery-9.jpg": galleryPhoto9,
 };
 
 function GalleryPhoto({ url, alt, onOpen }: { url: string; alt: string; onOpen: (item: { url: string; alt: string }) => void }) {
