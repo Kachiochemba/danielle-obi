@@ -113,8 +113,10 @@ function envelopeTransition(key: "stage" | "flap" | "letter" | "collage", openin
   const { delay, duration } = revealTiming[key];
   const closing = {
     stage: { delay: 2.24, duration: 0.38 },
-    collage: { delay: 0.58, duration: 0.44 },
-    letter: { delay: 1.05, duration: 0.54 },
+    // Retract the keepsake as its pieces gather. Keeping these movements
+    // together prevents the photos from stacking in midair above the pocket.
+    collage: { delay: 0.78, duration: 0.52 },
+    letter: { delay: 0.58, duration: 0.82 },
     flap: { delay: 1.64, duration: 0.68 },
   }[key];
   return {

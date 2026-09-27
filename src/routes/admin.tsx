@@ -23,7 +23,9 @@ function SignIn() {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
     setBusy(true); setError("");
-    const { error } = await supabase.auth.signInWithPassword({ email: String(f.get("email")), password: String(f.get("password")) });
+    const raw = String(f.get("email")).trim().toLowerCase();
+    const email = raw.includes("@") ? raw : `${raw}@danielleandobi.com.ng`;
+    const { error } = await supabase.auth.signInWithPassword({ email, password: String(f.get("password")) });
     setBusy(false);
     if (error) setError("Those details did not match. Please try again.");
   }
@@ -52,7 +54,7 @@ function SignIn() {
   return <form onSubmit={submit} className={box}>
     <p className="eyebrow text-center text-muted-label">USHERS ONLY</p>
     <h1 className="text-center font-serif text-3xl text-wine">Sign in</h1>
-    <div><Label htmlFor="a-email">Email</Label><Input id="a-email" name="email" type="email" required autoComplete="email" className="mt-1 h-12" /></div>
+    <div><Label htmlFor="a-email">Username or email</Label><Input id="a-email" name="email" type="text" required autoComplete="username" autoCapitalize="none" className="mt-1 h-12" /></div>
     <div><Label htmlFor="a-pass">Password</Label><Input id="a-pass" name="password" type="password" required autoComplete="current-password" className="mt-1 h-12" /></div>
     {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
     <Button disabled={busy} className="h-12 w-full bg-wine text-cream hover:bg-wine/90">{busy ? "Signing in…" : "Sign in"}</Button>

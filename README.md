@@ -58,7 +58,8 @@ See `.env.example` for the full list. Summary:
 | `VITE_SUPABASE_URL`, `SUPABASE_URL` | Client + server Supabase connection | No — public |
 | `VITE_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_PUBLISHABLE_KEY` | Client + server Supabase connection | No — public |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server-only — admin queries, RSVP writes, check-in | **Yes — never commit or expose client-side** |
-| `GMAIL_CLIENT_ID` / `GMAIL_CLIENT_SECRET` / `GMAIL_REFRESH_TOKEN` | Planned — RSVP confirmation/notification email (not yet implemented) | **Yes, once added** |
+| `RESEND_API_KEY` | RSVP confirmation and notification emails via Resend | **Yes** |
+| `RSVP_FROM_EMAIL`, `ADMIN_NOTIFY_EMAILS` | Verified sender address and notification recipients | No |
 
 ## Database
 
@@ -79,8 +80,8 @@ This project already builds for Cloudflare by default (see the comment in `vite.
 
 ## Status / known gaps
 
-- RSVP confirmation and internal notification emails are not yet sending — `src/lib/rsvp-notify.server.ts` is currently a stub. Planned implementation uses the Gmail API (HTTPS-based, works on Cloudflare) to send from `ochembaonyekachi.t@gmail.com`, since standard SMTP isn't reliably supported on Cloudflare's runtime.
-- Photo gallery / additional couple photos not yet added.
+- RSVP confirmation and internal notification emails use Resend's HTTPS API. Configure a verified sender domain and `RESEND_API_KEY` in the Worker's runtime secrets before expecting messages. RSVP submission still succeeds if email delivery fails, with errors logged server-side.
+- The hero, envelope collage, and six gallery photos are bundled as local assets.
 
 ## License
 
