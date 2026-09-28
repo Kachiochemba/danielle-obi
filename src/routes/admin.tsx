@@ -81,11 +81,10 @@ function AdminLayout() {
       : admin.isLoading ? <p className="mt-20 text-center text-muted-label">Checking access…</p>
       : !admin.data?.admin ? <div className="mx-auto mt-20 max-w-sm text-center"><p className="font-serif text-2xl text-wine">This account does not have usher access.</p><Button variant="outline" className="mt-6" onClick={() => supabase.auth.signOut()}>Sign out</Button></div>
       : <div className="mx-auto max-w-5xl">
-          <nav className="flex flex-wrap items-center gap-2 border-b border-gold/25 pb-3">
+          <nav aria-label="Admin navigation" className="flex flex-wrap items-center gap-2 border-b border-gold/25 pb-3">
             <span className="mr-auto font-script text-2xl text-wine">D & O</span>
-            <Link to="/admin/checkin" className="rounded-sm px-3 py-2 text-sm font-semibold text-foreground/70" activeProps={{ className: "bg-wine text-cream" }}>Check-in</Link>
-            <Link to="/admin/rsvps" className="rounded-sm px-3 py-2 text-sm font-semibold text-foreground/70" activeProps={{ className: "bg-wine text-cream" }}>Guest list</Link>
-            <Button variant="ghost" size="sm" onClick={() => supabase.auth.signOut()}>Sign out</Button>
+            {([['/admin', 'Dashboard'], ['/admin/rsvps', 'Guest list'], ['/admin/checkin', 'Check-in']] as const).map(([to, label]) => <Link key={to} to={to} activeOptions={{ exact: true }} className="rounded-sm px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold active:bg-wine-deep active:text-cream" activeProps={{ className: "bg-wine text-cream hover:bg-wine-deep hover:text-cream" }} inactiveProps={{ className: "text-wine hover:bg-wine hover:text-cream" }}>{label}</Link>)}
+            <Button variant="ghost" size="sm" className="text-wine hover:bg-wine hover:text-cream active:bg-wine-deep active:text-cream" onClick={() => supabase.auth.signOut()}>Sign out</Button>
           </nav>
           <Outlet />
         </div>}

@@ -14,6 +14,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as CelebrationRouteImport } from './routes/celebration'
 import { Route as GiftsRouteImport } from './routes/gifts'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminCheckinRouteImport } from './routes/admin.checkin'
 import { Route as AdminRsvpsRouteImport } from './routes/admin.rsvps'
 import { Route as CheckinCodeRouteImport } from './routes/checkin.$code'
@@ -43,6 +44,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminCheckinRoute = AdminCheckinRouteImport.update({
   id: '/checkin',
@@ -74,17 +80,18 @@ export interface FileRoutesByFullPath {
   '/admin/checkin': typeof AdminCheckinRoute
   '/admin/rsvps': typeof AdminRsvpsRoute
   '/checkin/$code': typeof CheckinCodeRoute
+  '/admin/': typeof AdminIndexRoute
   '/api/public/qr/$code': typeof ApiPublicQrCodeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
   '/celebration': typeof CelebrationRoute
   '/gifts': typeof GiftsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/admin/checkin': typeof AdminCheckinRoute
   '/admin/rsvps': typeof AdminRsvpsRoute
   '/checkin/$code': typeof CheckinCodeRoute
+  '/admin': typeof AdminIndexRoute
   '/api/public/qr/$code': typeof ApiPublicQrCodeRoute
 }
 export interface FileRoutesById {
@@ -97,6 +104,7 @@ export interface FileRoutesById {
   '/admin/checkin': typeof AdminCheckinRoute
   '/admin/rsvps': typeof AdminRsvpsRoute
   '/checkin/$code': typeof CheckinCodeRoute
+  '/admin/': typeof AdminIndexRoute
   '/api/public/qr/$code': typeof ApiPublicQrCodeRoute
 }
 export interface FileRouteTypes {
@@ -110,17 +118,18 @@ export interface FileRouteTypes {
     | '/admin/checkin'
     | '/admin/rsvps'
     | '/checkin/$code'
+    | '/admin/'
     | '/api/public/qr/$code'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/celebration'
     | '/gifts'
     | '/reset-password'
     | '/admin/checkin'
     | '/admin/rsvps'
     | '/checkin/$code'
+    | '/admin'
     | '/api/public/qr/$code'
   id:
     | '__root__'
@@ -132,6 +141,7 @@ export interface FileRouteTypes {
     | '/admin/checkin'
     | '/admin/rsvps'
     | '/checkin/$code'
+    | '/admin/'
     | '/api/public/qr/$code'
   fileRoutesById: FileRoutesById
 }
@@ -182,6 +192,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/checkin': {
       id: '/admin/checkin'
       path: '/checkin'
@@ -216,11 +233,13 @@ declare module '@tanstack/react-router' {
 interface AdminRouteChildren {
   AdminCheckinRoute: typeof AdminCheckinRoute
   AdminRsvpsRoute: typeof AdminRsvpsRoute
+  AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminCheckinRoute: AdminCheckinRoute,
   AdminRsvpsRoute: AdminRsvpsRoute,
+  AdminIndexRoute: AdminIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
