@@ -60,8 +60,45 @@ export const listRsvps = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const admin = await assertAdmin(context as unknown as Ctx);
-    const { data } = await admin.from("rsvps")
+    const snapshotAt = new Date().toISOString();
+    const fetchPage = (offset: number) => admin.from("rsvps")
       .select("id, full_name, email, guest_count, attending, notes, submitted_at, checked_in, checked_in_at")
-      .order("submitted_at", { ascending: false });
-    return { rows: data ?? [] };
+      .lte("submitted_at", snapshotAt)
+      .order("submitted_at", { ascending: false }).order("id")
+      .range(offset, offset + 999);
+    const first = await fetchPage(0);
+    if (first.error) throw new Error("Could not load RSVPs. Please try again.");
+    const rows = first.data ?? [];
+    let pageLength = rows.length;
+    while (pageLength === 1000) {
+      const page = await fetchPage(rows.length);
+      if (page.error) throw new Error("Could not load RSVPs. Please try again.");
+      rows.push(...(page.data ?? []));
+      pageLength = page.data?.length ?? 0;
+    }
+    return { rows, snapshotAt };
+  });
+
+export const deleteRsvp = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) => z.object({ id: z.string().uuid() }).parse(data))
+  .handler(async ({ context, data }) => {
+    const admin = await assertAdmin(context as unknown as Ctx);
+    const { error, count } = await admin.from("rsvps").delete({ count: "exact" }).eq("id", data.id);
+    if (error) throw new Error("Could not delete this RSVP. Please try again.");
+    return { deleted: count ?? 0 };
+  });
+
+export const clearRsvps = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) => z.object({
+    confirmation: z.literal("DELETE ALL"),
+    before: z.string().datetime().refine((value) => Date.parse(value) <= Date.now(), "Refresh the guest list and try again."),
+  }).parse(data))
+  .handler(async ({ context, data }) => {
+    const admin = await assertAdmin(context as unknown as Ctx);
+    // Preserve submissions arriving after the list being confirmed was loaded.
+    const { error, count } = await admin.from("rsvps").delete({ count: "exact" }).lte("submitted_at", data.before);
+    if (error) throw new Error("Could not clear the guest list. Please try again.");
+    return { deleted: count ?? 0 };
   });

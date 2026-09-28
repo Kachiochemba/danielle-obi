@@ -52,11 +52,12 @@ export const wedding = {
   },
   // image = file name inside the wedding-photos storage. Upload a file with that exact name to replace the placeholder.
   story: [
-    { title: "How We Met", image: "story-1.jpg", text: "We first met at a place where neither of us expected to find love. I saw her, and somehow a part of me already knew." },
-    { title: "The Chapters in Between", image: "story-2.jpg", text: "What began unexpectedly became a friendship, and that friendship became love, and that love became partnership." },
-    { title: "The Question by the Water", image: "story-3.jpg", text: "Perhaps it was fitting that the next chapter of our story happened on water. We had always loved being around it. As the day began to give way to evening, surrounded by water and fading lights, I asked her to take the next step with me, not just for another chapter but for a lifetime." },
-    { title: "Still Writing", image: "story-4.jpg", text: "This time the story is no longer about two people wondering where life will take them; it's about two people who have decided to take this journey together. Whatever comes next, we know we want to be beside each other, and this time we get to write the rest of the story together." },
+    { title: "Where Two Souls First Crossed", image: "story-1.jpg", text: "Our story began in a place filled with ambition, academic pressure, late-night readings and endless lectures. Neither of us expected to find our forever person, but fate had other ideas." },
+    { title: "When Something Felt Different", image: "story-2.jpg", text: "What started off as stolen glances became intense butterflies and anticipation, which eventually led to a fated breakdown of a car on a sunny afternoon, where the spark was finally ignited." },
+    { title: "The Day Fate Found a Way", image: "story-3.jpg", text: "Sometimes, we can’t help but wonder if our love would ever have blossomed if that car had never broken down that day. But the truth is, a love like this is destined for the ages. In any other life, time or multiverse, we would have found our way to each other." },
+    { title: "Written in the Stars", image: "story-4.jpg", text: "But in this lifetime, all it took was a broken-down car, a brave hello, and two people who had no idea they had just met their forever." },
   ],
+  storyClosing: "And so, our story began….",
   gallery: [
     { file: "gallery-1.jpg", alt: "Danielle and Obi in red and gold traditional attire" },
     { file: "gallery-2.jpg", alt: "Danielle smiling through Obi's hands" },

@@ -68,7 +68,7 @@ export async function notifyRsvp(r: RsvpForEmail, siteUrl: string): Promise<void
     send(r.email, "Your RSVP for Danielle & Obi's wedding", guest, `rsvp-confirm-${r.id}`, qr ? [qr] : undefined),
   ];
   const admins = (process.env["ADMIN_NOTIFY_EMAILS"] ?? "").split(",").map((s) => s.trim()).filter(Boolean);
-  const admin = shell(`<h2 style="color:#4a1424">New RSVP</h2><p><strong>${name}</strong><br/>${esc(r.email)}</p><p>Attending: ${r.attending ? "Yes" : "No"}<br/>Party size: ${r.guest_count}<br/>Code: ${code}</p><p><a href="${publicSite}/admin/rsvps" style="color:#4a1424">Open the guest list</a></p>`);
+  const admin = shell(`<h2 style="color:#4a1424">New RSVP received</h2><p>Hey Obi, <strong>${name}</strong> just filled out the wedding RSVP form.</p><p>${esc(r.email)}</p><p>Attending: ${r.attending ? "Yes" : "No"}<br/>Party size: ${r.guest_count}<br/>Code: ${code}</p><p>Check the admin dashboard for more information.</p><p><a href="${publicSite}/admin/rsvps" style="color:#4a1424">Open the admin dashboard</a></p>`);
   admins.forEach((a, i) => tasks.push(send(a, `[RSVP] ${r.full_name} · ${r.attending ? "Yes" : "No"} · party of ${r.guest_count}`, admin, `rsvp-admin-${r.id}-${i}`)));
   const results = await Promise.allSettled(tasks);
   results.forEach((x) => x.status === "rejected" && console.error("RSVP email failed", x.reason));
