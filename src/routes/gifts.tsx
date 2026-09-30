@@ -1,7 +1,7 @@
 import { useRef, useState, type FormEvent } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { Heart } from "lucide-react";
+import { GiftPage } from "@/components/wedding/GiftPage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -61,44 +61,35 @@ function GiftRegistry() {
     }
   }
   return (
-    <main className="min-h-screen bg-background px-5 py-10">
-      <div className="mx-auto max-w-xl">
-        <Link to="/" className="text-sm text-wine underline">
-          Back to the invitation
-        </Link>
-        <header className="my-10 text-center">
-          <Heart className="mx-auto mb-4 size-8 text-gold" />
-          <p className="eyebrow text-wine">DANIELLE & OBI</p>
-          <h1 className="mt-2 font-serif text-5xl text-wine">A gift, with love</h1>
-          <p className="mt-4 leading-7">
-            Your presence is our greatest gift. If you would like to bless our new home, we are
-            truly grateful.
-          </p>
-        </header>
+    <GiftPage
+      title="A gift, with love"
+      subtitle="Your presence is our greatest gift. Thank you for thinking of our new home."
+    >
+      <div className="mx-auto max-w-lg">
         {pledged !== null ? (
           <section
             role="status"
-            className="space-y-5 rounded-md border border-gold/30 bg-card p-7 text-center"
+            className="space-y-7 border border-gold/25 bg-card px-6 py-9 text-center sm:p-10"
           >
-            <h2 className="font-serif text-3xl text-wine">Thank you for your generosity!</h2>
+            <h2 className="font-serif text-3xl text-wine">Thank you, with love</h2>
             <p>
-              Your pledge of <strong>{naira(pledged)}</strong> has been recorded. To send your gift,
-              please transfer to:
+              To send your gift of <strong>{naira(pledged)}</strong>, please use the details below.
             </p>
-            <dl className="space-y-2 rounded-md bg-background p-5">
-              <dt className="text-sm">Bank</dt>
+            <dl className="grid gap-y-2 border-y border-gold/25 py-7">
+              <dt className="mt-3 text-xs uppercase tracking-widest text-foreground/65">Bank</dt>
               <dd className="font-semibold">{giftBank.bank}</dd>
-              <dt className="text-sm">Account name</dt>
+              <dt className="mt-3 text-xs uppercase tracking-widest text-foreground/65">
+                Account name
+              </dt>
               <dd className="font-semibold">{giftBank.name}</dd>
-              <dt className="text-sm">Account number</dt>
+              <dt className="mt-3 text-xs uppercase tracking-widest text-foreground/65">
+                Account number
+              </dt>
               <dd className="select-all break-all font-serif text-3xl tracking-wider text-wine">
                 {giftBank.number}
               </dd>
             </dl>
-            <p className="text-sm">
-              Please use your name as the transfer reference and confirm the account name in your
-              banking app. This page records your pledge; it does not confirm receipt of a transfer.
-            </p>
+            <p className="text-sm">Please use your name as the transfer reference.</p>
             <Button asChild>
               <Link to="/">Back to the invitation</Link>
             </Button>
@@ -106,7 +97,7 @@ function GiftRegistry() {
         ) : (
           <form
             onSubmit={submit}
-            className="space-y-5 rounded-md border border-gold/30 bg-card p-7"
+            className="space-y-7 border border-gold/25 bg-card px-6 py-8 sm:p-10"
           >
             <div>
               <Label htmlFor="gift-name">Full name</Label>
@@ -117,7 +108,7 @@ function GiftRegistry() {
                 minLength={2}
                 maxLength={120}
                 autoComplete="name"
-                className="mt-2 h-12"
+                className="mt-3 h-12 bg-transparent"
               />
             </div>
             <div>
@@ -129,19 +120,19 @@ function GiftRegistry() {
                 required
                 maxLength={255}
                 autoComplete="email"
-                className="mt-2 h-12"
+                className="mt-3 h-12 bg-transparent"
               />
             </div>
             <div>
-              <Label htmlFor="gift-kind">How would you like to give?</Label>
+              <Label htmlFor="gift-kind">Gift type</Label>
               <select
                 id="gift-kind"
                 value={kind}
                 onChange={(e) => setKind(e.target.value)}
-                className="mt-2 h-12 w-full rounded-md border border-input bg-background px-3"
+                className="mt-3 h-12 w-full rounded-md border border-input bg-transparent px-3"
               >
                 <option value="money">Monetary gift</option>
-                <option value="items">Choose from the gift list</option>
+                <option value="items">Choose a gift</option>
               </select>
             </div>
             {kind === "money" && (
@@ -155,7 +146,7 @@ function GiftRegistry() {
                   max="100000000"
                   step="0.01"
                   required
-                  className="mt-2 h-12"
+                  className="mt-3 h-12 bg-transparent"
                   placeholder="Enter your gift amount"
                 />
               </div>
@@ -166,15 +157,11 @@ function GiftRegistry() {
               </p>
             )}
             <Button disabled={busy} className="h-12 w-full bg-wine text-cream hover:bg-wine-deep">
-              {busy ? "Saving…" : "Submit"}
+              {busy ? "Saving…" : kind === "items" ? "Browse gifts" : "Continue"}
             </Button>
-            <p className="text-xs leading-5">
-              Your details and gift choice will be shared privately with the couple. No gift
-              confirmation email will be sent to you.
-            </p>
           </form>
         )}
       </div>
-    </main>
+    </GiftPage>
   );
 }

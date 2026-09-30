@@ -47,7 +47,7 @@ test("gift forms reject negative amounts, empty selections, duplicates and inval
     true,
   );
 });
-function actions() {
+function actions(overrides = {}) {
   const calls = [];
   const middleware = {};
   const db = {
@@ -60,7 +60,7 @@ function actions() {
     "./gifts.shared": shared,
     zod: require("zod"),
     "@/data/gift-catalog.json": [],
-    "./gifts.server": { giftDb: db },
+    "./gifts.server": { giftDb: { ...db, ...overrides } },
     "@/integrations/supabase/auth-middleware": { requireSupabaseAuth: middleware },
     "@tanstack/react-start": {
       createServerFn(options) {
@@ -169,5 +169,36 @@ test("email failure keeps the gift notification pending", async () => {
       notification_sent_at: null,
     }),
     false,
+  );
+});
+
+test("gift deletion requires admin authorization and explicit valid IDs", async () => {
+  const calls = [];
+  const { api, middleware } = actions({
+    rpc: async (...args) => {
+      calls.push(args);
+      return { data: 2, error: null };
+    },
+  });
+  const fn = api.deleteGiftRecords;
+  assert.equal(fn.guards[0], middleware);
+  const denied = { userId: "test", supabase: { rpc: async () => ({ data: false }) } };
+  await assert.rejects(fn.run(denied, { ids: [base.requestId] }), /Forbidden/);
+  const allowed = { userId: "admin", supabase: { rpc: async () => ({ data: true }) } };
+  for (const ids of [[], ["not-a-uuid"]]) assert.throws(() => fn.run(allowed, { ids }));
+  assert.equal(calls.length, 0);
+  const result = await fn.run(allowed, { ids: [base.requestId, base.requestId] });
+  assert.equal(result.deleted, 2);
+  assert.equal(calls[0][0], "delete_gift_records");
+  assert.deepEqual(Array.from(calls[0][1].p_ids), [base.requestId]);
+});
+test("gift deletion reports database failure instead of claiming success", async () => {
+  const { api } = actions({ rpc: async () => ({ data: null, error: { message: "failed" } }) });
+  await assert.rejects(
+    api.deleteGiftRecords.run(
+      { userId: "admin", supabase: { rpc: async () => ({ data: true }) } },
+      { ids: [base.requestId] },
+    ),
+    /Could not delete/,
   );
 });

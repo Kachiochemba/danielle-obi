@@ -77,3 +77,20 @@ export const retryGiftNotification = createServerFn({ method: "POST" })
     if (result.error) throw new Error("Gift not found");
     return { sent: await notifyGift(result.data as GiftPledge) };
   });
+
+export const deleteGiftRecords = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) =>
+    z.object({ ids: z.array(z.string().uuid()).min(1).max(10000) }).parse(d),
+  )
+  .handler(async ({ context, data }) => {
+    const role = await context.supabase.rpc("has_role", {
+      _user_id: context.userId,
+      _role: "admin",
+    });
+    if (role.error || !role.data) throw new Error("Forbidden");
+    const { giftDb } = await import("./gifts.server");
+    const result = await giftDb.rpc("delete_gift_records", { p_ids: [...new Set(data.ids)] });
+    if (result.error) throw new Error("Could not delete gifts. Please try again.");
+    return { deleted: Number(result.data) };
+  });
