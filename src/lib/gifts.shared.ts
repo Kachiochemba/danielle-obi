@@ -12,6 +12,7 @@ export const giftSubmissionSchema = z.discriminatedUnion("kind", [
   giftIdentitySchema.extend({
     requestId: z.string().uuid(),
     kind: z.literal("money"),
+    email: giftIdentitySchema.shape.email.nullish(),
     amount: z.number().positive().max(100000000).multipleOf(0.01),
   }),
   giftIdentitySchema.extend({
@@ -23,12 +24,18 @@ export const giftSubmissionSchema = z.discriminatedUnion("kind", [
       .max(10)
       .refine((v) => new Set(v).size === v.length, "Select each gift only once"),
   }),
+  giftIdentitySchema.extend({
+    requestId: z.string().uuid(),
+    kind: z.literal("wish"),
+    wish: z.string().trim().min(1).max(3000),
+  }),
 ]);
 export type GiftPledge = {
   id: string;
   full_name: string;
-  email: string;
-  kind: "money" | "items";
+  email: string | null;
+  kind: "money" | "items" | "wish";
+  wish: string | null;
   amount: number | null;
   items: { id: string; name: string }[];
   created_at: string;

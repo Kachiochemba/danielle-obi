@@ -1,13 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Sparkles } from "lucide-react";
-import { Link } from "@tanstack/react-router";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,7 +11,6 @@ import { Reveal, SectionTitle } from "./shared";
 export function Rsvp() {
   const [attending, setAttending] = useState(true);
   const [status, setStatus] = useState<"idle" | "saving" | "success" | "error">("idle");
-  const [giftPrompt, setGiftPrompt] = useState(false);
   const thankYouRef = useRef<HTMLHeadingElement>(null);
   const send = useServerFn(submitRsvp);
   useEffect(() => {
@@ -50,7 +41,6 @@ export function Rsvp() {
       });
       if (res.ok) {
         setStatus("success");
-        setGiftPrompt(true);
       } else setStatus("error");
     } catch {
       setStatus("error");
@@ -78,9 +68,8 @@ export function Rsvp() {
               Thank you!
             </h3>
             <p className="mx-auto mt-5 max-w-sm font-serif text-lg leading-8 text-foreground/70">
-              Thank you for responding to our invitation.{" "}
               {attending
-                ? "We can't wait to celebrate with you! Check your email for your invitation and check-in QR code."
+                ? "Thank you for celebrating with us. Your invitation will arrive by email."
                 : "We'll miss you, and we're grateful you let us know."}
             </p>
           </div>
@@ -177,30 +166,6 @@ export function Rsvp() {
           </form>
         )}
       </div>
-      <Dialog open={giftPrompt} onOpenChange={setGiftPrompt}>
-        <DialogContent
-          onCloseAutoFocus={(e) => {
-            e.preventDefault();
-            thankYouRef.current?.focus();
-          }}
-        >
-          <DialogTitle className="font-serif text-3xl text-wine">
-            Would you like to leave a gift?
-          </DialogTitle>
-          <DialogDescription>
-            Your presence means so much to us. If you would like to give a little something, visit
-            our gift registry.
-          </DialogDescription>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setGiftPrompt(false)}>
-              No, thank you
-            </Button>
-            <Button asChild className="bg-wine text-cream hover:bg-wine-deep">
-              <Link to="/gifts">Yes, visit the registry</Link>
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

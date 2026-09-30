@@ -67,9 +67,9 @@ export const wedding = {
     { file: "gallery-7.jpg", alt: "Danielle resting her hand on Obi's shoulder as they smile" },
   ],
   gifts: [
-    { icon: "bank", title: "A Little Blessing", text: "Bank transfer details will be shared here by the couple." },
-    { icon: "gift", title: "Gift Registry", text: "A registry link can be added here when it is ready." },
-    { icon: "heart", title: "Your Good Wishes", text: "A prayer, a warm embrace, and your presence mean everything." },
+    { icon: "bank", title: "A Little Blessing", text: "A little something for our next chapter." },
+    { icon: "gift", title: "Gift Registry", text: "Choose something special for our new home." },
+    { icon: "heart", title: "Your Good Wishes", text: "Leave a prayer, a wish, or a few words of love." },
   ],
 } as const;
 

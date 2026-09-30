@@ -60,7 +60,7 @@ function actions(overrides = {}) {
     "./gifts.shared": shared,
     zod: require("zod"),
     "@/data/gift-catalog.json": [],
-    "./gifts.server": { giftDb: { ...db, ...overrides } },
+    "./gifts.server": { giftDb: { ...db, ...overrides }, notifyGift: async () => true },
     "@/integrations/supabase/auth-middleware": { requireSupabaseAuth: middleware },
     "@tanstack/react-start": {
       createServerFn(options) {
@@ -140,6 +140,21 @@ test("gift email goes only to Obi, escapes guest text, and identifies pledges ho
   assert.equal(updated, true);
   await api.notifyGift({ ...row, notification_sent_at: "2026-09-30" });
   assert.equal(sent.length, 1);
+  await api.notifyGift({
+    ...row,
+    id: "00000000-0000-4000-8000-000000000008",
+    kind: "wish",
+    amount: null,
+    wish: "<img src=x onerror=bad> Wishing you joy!",
+  });
+  assert.equal(sent.length, 2);
+  assert.deepEqual(sent[1].to, ["obialoochemba@gmail.com"]);
+  assert.match(sent[1].html, /&lt;img/);
+  assert.match(sent[1].html, /Wishing you joy!/);
+  assert.ok(!sent[1].html.includes("<img"));
+  await api.notifyGift({ ...row, id: "00000000-0000-4000-8000-000000000009", email: null });
+  assert.equal(sent.length, 3);
+  assert.ok(!sent[2].html.includes("(null)"));
 });
 test("email failure keeps the gift notification pending", async () => {
   const api = load(
@@ -201,4 +216,56 @@ test("gift deletion reports database failure instead of claiming success", async
     ),
     /Could not delete/,
   );
+});
+
+test("money requires only name and amount, while wishes require email and nonempty text", () => {
+  const { email, ...nameOnly } = base;
+  assert.equal(
+    shared.giftSubmissionSchema.safeParse({ ...nameOnly, kind: "money", amount: 5000 }).success,
+    true,
+  );
+  for (const p of [
+    { ...base, kind: "wish", wish: "   " },
+    { ...base, kind: "wish", wish: "x".repeat(3001) },
+    { ...nameOnly, kind: "wish", wish: "Best wishes" },
+  ])
+    assert.equal(shared.giftSubmissionSchema.safeParse(p).success, false);
+  assert.equal(
+    shared.giftSubmissionSchema.safeParse({ ...base, kind: "wish", wish: "Best wishes" }).success,
+    true,
+  );
+});
+test("gift submission passes wish text and nullable monetary email to the database", async () => {
+  const calls = [];
+  const { api } = actions({
+    rpc: async (name, p) => {
+      calls.push({ name, p });
+      return {
+        data: {
+          id: p.p_id,
+          full_name: p.p_name,
+          email: p.p_email,
+          kind: p.p_kind,
+          amount: p.p_amount,
+          items: [],
+          wish: p.p_wish,
+        },
+        error: null,
+      };
+    },
+  });
+  const { email, ...nameOnly } = base;
+  assert.equal(
+    (await api.submitGift.run({}, { ...nameOnly, kind: "money", amount: 5000 })).ok,
+    true,
+  );
+  assert.equal(calls[0].p.p_email, null);
+  assert.equal(calls[0].p.p_wish, null);
+  assert.equal(
+    (await api.submitGift.run({}, { ...base, kind: "wish", wish: "Best wishes" })).ok,
+    true,
+  );
+  assert.equal(calls[1].name, "submit_gift_entry");
+  assert.equal(calls[1].p.p_wish, "Best wishes");
+  assert.equal(calls[1].p.p_amount, null);
 });

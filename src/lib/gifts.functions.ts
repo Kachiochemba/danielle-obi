@@ -21,13 +21,14 @@ export const submitGift = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => giftSubmissionSchema.parse(d))
   .handler(async ({ data }) => {
     const { giftDb, notifyGift } = await import("./gifts.server");
-    const { data: row, error } = await giftDb.rpc("submit_gift_pledge", {
+    const { data: row, error } = await giftDb.rpc("submit_gift_entry", {
       p_id: data.requestId,
       p_name: data.fullName,
-      p_email: data.email,
+      p_email: data.email ?? null,
       p_kind: data.kind,
       p_amount: data.kind === "money" ? data.amount : null,
       p_items: data.kind === "items" ? data.items : [],
+      p_wish: data.kind === "wish" ? data.wish : null,
     });
     if (error)
       return {

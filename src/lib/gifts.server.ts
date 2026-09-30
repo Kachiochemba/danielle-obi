@@ -14,7 +14,9 @@ export async function notifyGift(row: GiftPledge) {
   const detail =
     row.kind === "money"
       ? `pledged ${naira(Number(row.amount))}`
-      : `reserved: ${row.items.map((i) => i.name).join(", ")}`;
+      : row.kind === "wish"
+        ? "shared a wish for you"
+        : `reserved: ${row.items.map((i) => i.name).join(", ")}`;
   try {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -26,8 +28,8 @@ export async function notifyGift(row: GiftPledge) {
       body: JSON.stringify({
         from: process.env["RSVP_FROM_EMAIL"] || "Danielle & Obi <rsvp@danielleandobi.com.ng>",
         to: ["obialoochemba@gmail.com"],
-        subject: `[Wedding gift] ${row.full_name} · ${row.kind === "money" ? "Monetary pledge" : "Gift reservation"}`,
-        html: `<div style="font-family:Georgia,serif;color:#4a1424;padding:24px"><h1>A wedding gift from ${esc(row.full_name)}</h1><p>Hey Obi, ${esc(row.full_name)} (${esc(row.email)}) ${esc(detail)}.</p><p>${row.kind === "money" ? "This is a pledge, not confirmation of a bank transfer." : "These gifts are now reserved and unavailable to other guests. This is not confirmation of purchase or delivery."}</p><p><a href="https://www.danielleandobi.com.ng/gift-history">View gifting history</a></p></div>`,
+        subject: `[Wedding gift] ${row.full_name} · ${row.kind === "money" ? "Monetary pledge" : row.kind === "wish" ? "Good wishes" : "Gift reservation"}`,
+        html: `<div style="font-family:Georgia,serif;color:#4a1424;padding:24px"><h1>${row.kind === "wish" ? "A wedding wish" : "A wedding gift"} from ${esc(row.full_name)}</h1><p>Hey Obi, ${esc(row.full_name)}${row.email ? ` (${esc(row.email)})` : ""} ${esc(detail)}.</p>${row.kind === "wish" ? `<blockquote style="white-space:pre-wrap">${esc(row.wish ?? "")}</blockquote>` : `<p>${row.kind === "money" ? "This is a pledge, not confirmation of a bank transfer." : "These gifts are now reserved and unavailable to other guests. This is not confirmation of purchase or delivery."}</p>`}<p><a href="https://www.danielleandobi.com.ng/gift-history">View gifting history</a></p></div>`,
       }),
     });
     if (!res.ok) {

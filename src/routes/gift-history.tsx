@@ -98,7 +98,7 @@ function GiftHistory() {
       <header>
         <p className="eyebrow text-wine/70">FOR THE COUPLE</p>
         <h1 className="mt-2 font-serif text-4xl text-wine">Gifting history</h1>
-        <p className="mt-3 text-sm">Gift pledges and reservations, all in one place.</p>
+        <p className="mt-3 text-sm">Gifts and good wishes, all in one place.</p>
       </header>
       {query.isPending ? (
         <p role="status">Loading gifts…</p>
@@ -108,7 +108,7 @@ function GiftHistory() {
         <>
           <div className="grid gap-3 sm:grid-cols-3">
             {[
-              ["Gift submissions", rows.length],
+              ["Responses", rows.length],
               [
                 "Money pledged",
                 naira(rows.reduce((n, r) => n + (r.kind === "money" ? Number(r.amount) : 0), 0)),
@@ -153,7 +153,7 @@ function GiftHistory() {
             <table className="w-full min-w-[750px] text-left text-sm">
               <thead className="bg-cream">
                 <tr>
-                  {["Guest", "Gift / pledge", "Submitted", "Notification", ""].map((h) => (
+                  {["Guest", "Gift / wish", "Submitted", "Notification", ""].map((h) => (
                     <th className="px-5 py-4 text-xs font-medium uppercase tracking-wider" key={h}>
                       {h}
                     </th>
@@ -175,11 +175,19 @@ function GiftHistory() {
                       <p className="mt-2 text-xs text-foreground/70">{r.email}</p>
                     </td>
                     <td className="px-5 py-5">
-                      {r.kind === "money"
-                        ? naira(Number(r.amount))
-                        : r.items.map((i) => i.name).join(", ")}
+                      {r.kind === "money" ? (
+                        naira(Number(r.amount))
+                      ) : r.kind === "wish" ? (
+                        <p className="max-w-sm whitespace-pre-wrap break-words">{r.wish}</p>
+                      ) : (
+                        r.items.map((i) => i.name).join(", ")
+                      )}
                       <p className="mt-2 text-xs text-foreground/65">
-                        {r.kind === "money" ? "Pledged" : "Reserved"}
+                        {r.kind === "money"
+                          ? "Pledged"
+                          : r.kind === "wish"
+                            ? "Good wishes"
+                            : "Reserved"}
                       </p>
                     </td>
                     <td className="px-5 py-5">
