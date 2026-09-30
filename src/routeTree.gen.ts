@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as CelebrationRouteImport } from './routes/celebration'
+import { Route as GiftHistoryRouteImport } from './routes/gift-history'
+import { Route as GiftListRouteImport } from './routes/gift-list'
 import { Route as GiftsRouteImport } from './routes/gifts'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
@@ -33,6 +35,16 @@ const AdminRoute = AdminRouteImport.update({
 const CelebrationRoute = CelebrationRouteImport.update({
   id: '/celebration',
   path: '/celebration',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GiftHistoryRoute = GiftHistoryRouteImport.update({
+  id: '/gift-history',
+  path: '/gift-history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GiftListRoute = GiftListRouteImport.update({
+  id: '/gift-list',
+  path: '/gift-list',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GiftsRoute = GiftsRouteImport.update({
@@ -75,6 +87,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/celebration': typeof CelebrationRoute
+  '/gift-history': typeof GiftHistoryRoute
+  '/gift-list': typeof GiftListRoute
   '/gifts': typeof GiftsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/admin/checkin': typeof AdminCheckinRoute
@@ -86,6 +100,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/celebration': typeof CelebrationRoute
+  '/gift-history': typeof GiftHistoryRoute
+  '/gift-list': typeof GiftListRoute
   '/gifts': typeof GiftsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/admin/checkin': typeof AdminCheckinRoute
@@ -99,6 +115,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/celebration': typeof CelebrationRoute
+  '/gift-history': typeof GiftHistoryRoute
+  '/gift-list': typeof GiftListRoute
   '/gifts': typeof GiftsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/admin/checkin': typeof AdminCheckinRoute
@@ -113,6 +131,8 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/celebration'
+    | '/gift-history'
+    | '/gift-list'
     | '/gifts'
     | '/reset-password'
     | '/admin/checkin'
@@ -124,6 +144,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/celebration'
+    | '/gift-history'
+    | '/gift-list'
     | '/gifts'
     | '/reset-password'
     | '/admin/checkin'
@@ -136,6 +158,8 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/celebration'
+    | '/gift-history'
+    | '/gift-list'
     | '/gifts'
     | '/reset-password'
     | '/admin/checkin'
@@ -149,6 +173,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   CelebrationRoute: typeof CelebrationRoute
+  GiftHistoryRoute: typeof GiftHistoryRoute
+  GiftListRoute: typeof GiftListRoute
   GiftsRoute: typeof GiftsRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   CheckinCodeRoute: typeof CheckinCodeRoute
@@ -176,6 +202,20 @@ declare module '@tanstack/react-router' {
       path: '/celebration'
       fullPath: '/celebration'
       preLoaderRoute: typeof CelebrationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gift-history': {
+      id: '/gift-history'
+      path: '/gift-history'
+      fullPath: '/gift-history'
+      preLoaderRoute: typeof GiftHistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gift-list': {
+      id: '/gift-list'
+      path: '/gift-list'
+      fullPath: '/gift-list'
+      preLoaderRoute: typeof GiftListRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gifts': {
@@ -248,6 +288,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   CelebrationRoute: CelebrationRoute,
+  GiftHistoryRoute: GiftHistoryRoute,
+  GiftListRoute: GiftListRoute,
   GiftsRoute: GiftsRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   CheckinCodeRoute: CheckinCodeRoute,

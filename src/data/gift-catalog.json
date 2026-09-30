@@ -1,0 +1,102 @@
+[
+  {
+    "id": "steam-cleaner",
+    "name": "Steam cleaner",
+    "description": "Steam cleaning machine for household surfaces and upholstery.",
+    "model": "Steam cleaner ",
+    "price": 190000,
+    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/02/7722024/1.jpg?6049",
+    "sourceUrl": "https://www.jumia.com.ng/unbrnd-steam-cleaner-420227720.html",
+    "checkedAt": "2026-09-30"
+  },
+  {
+    "id": "carpet-cleaner",
+    "name": "Carpet cleaning machine",
+    "description": "ORVICA ORM-513 portable 1350W cleaner for carpets, sofas and upholstery.",
+    "model": " Portable Carpet Cleaner ORM-513 1350W",
+    "price": 200000,
+    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/63/3427914/1.jpg?4121",
+    "sourceUrl": "https://www.jumia.com.ng/orvica-portable-carpet-cleaner-orm-513-1350w-419724336.html",
+    "checkedAt": "2026-09-30"
+  },
+  {
+    "id": "carpet-extractor",
+    "name": "Carpet extractor",
+    "description": "20-litre wet and dry extractor with spray extraction for carpets and upholstery.",
+    "model": "20L Wet & Dry Carpet Extractor Vacuum Cleaner",
+    "price": 285000,
+    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/16/4902024/1.jpg?0433",
+    "sourceUrl": "https://www.jumia.com.ng/generic-20l-wet-dry-carpet-extractor-vacuum-cleaner-420209461.html",
+    "checkedAt": "2026-09-30"
+  },
+  {
+    "id": "gas-cooker",
+    "name": "Gas cooker",
+    "description": "Aeon AGC5040J four-burner standing gas cooker, 50 × 50 cm.",
+    "model": "4 Burner 50 x 50 Gas Cooker (AGC5040J) - Black + 1 Year Warranty",
+    "price": 118999,
+    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/98/0913104/1.jpg?1174",
+    "sourceUrl": "https://www.jumia.com.ng/aeon-4-burner-50-x-50-gas-cooker-agc5040j-black-1-year-warranty-401319089.html",
+    "checkedAt": "2026-09-30"
+  },
+  {
+    "id": "air-fryer",
+    "name": "Air fryer",
+    "description": "Maxi TN40B2 4-litre, 1500W air fryer for everyday cooking.",
+    "model": "Air Fryer 4L Black 1500W (TN40B2)",
+    "price": 66500,
+    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/30/6002014/1.jpg?1240",
+    "sourceUrl": "https://www.jumia.com.ng/maxi-air-fryer-4l-black-1500w-tn40b2-410200603.html",
+    "checkedAt": "2026-09-30"
+  },
+  {
+    "id": "microwave",
+    "name": "Microwave",
+    "description": "Maxi 20-litre digital microwave for reheating and preparing meals.",
+    "model": "20 Litres Digital Microwave Oven (MAXIMWO207P3B) / 202LYD + 12 Months Warranty",
+    "price": 62640,
+    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/97/8785814/1.jpg?1501",
+    "sourceUrl": "https://www.jumia.com.ng/maxi-20-litres-digital-microwave-oven-maximwo207p3b-202lyd-12-months-warranty-418587879.html",
+    "checkedAt": "2026-09-30"
+  },
+  {
+    "id": "deep-freezer",
+    "name": "Deep freezer",
+    "description": "Aeon ACF150GJ 150-litre chest freezer in dark grey.",
+    "model": "150Litres Chest Freezer (ACF150GJ) - Dark Grey + 1 Year Warranty.",
+    "price": 209000,
+    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/88/0913104/1.jpg?1150",
+    "sourceUrl": "https://www.jumia.com.ng/aeon-150litres-chest-freezer-acf150gj-dark-grey-1-year-warranty.-401319088.html",
+    "checkedAt": "2026-09-30"
+  },
+  {
+    "id": "juicer",
+    "name": "Juicer",
+    "description": "Sokany slow juicer for preparing fresh fruit juice at home.",
+    "model": "Whole Fruit Multifunctional Slow Juicer",
+    "price": 110000,
+    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/30/519617/1.jpg?2651",
+    "sourceUrl": "https://www.jumia.com.ng/sokany-whole-fruit-multifunctional-slow-juicer-71691503.html",
+    "checkedAt": "2026-09-30"
+  },
+  {
+    "id": "toaster",
+    "name": "Toaster",
+    "description": "Maxi RP2L22W two-slice automatic pop-up toaster.",
+    "model": "Auto Pop-up Toaster 2 Slices - RP2L22W",
+    "price": 39999,
+    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/89/4784363/1.jpg?7029",
+    "sourceUrl": "https://www.jumia.com.ng/maxi-auto-pop-up-toaster-2-slices-rp2l22w-363487498.html",
+    "checkedAt": "2026-09-30"
+  },
+  {
+    "id": "ac",
+    "name": "Air conditioner",
+    "description": "Aeon ASA12IJJ 1.5HP split inverter air conditioner with installation kit.",
+    "model": "1.5HP Split Inverter Air Conditioner (ASA12IJJ) with Free Installation Kit + 2 Year Warranty - White",
+    "price": 299785,
+    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/39/0913104/1.jpg?0992",
+    "sourceUrl": "https://www.jumia.com.ng/aeon-1.5hp-split-inverter-air-conditioner-asa12ijj-with-free-installation-kit-2-year-warranty-white-401319093.html",
+    "checkedAt": "2026-09-30"
+  }
+]
