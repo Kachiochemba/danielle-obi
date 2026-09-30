@@ -170,46 +170,49 @@ function GiftList() {
             <p className="mt-8 text-center text-xs leading-6 text-foreground/65">
               Prices are indicative. See Jumia for current prices and delivery.
             </p>
-            <div className="sticky bottom-4 z-20 mt-10 border border-gold/30 bg-card/95 p-5 shadow-sm backdrop-blur sm:p-6">
-              {error && (
-                <p role="alert" className="mb-3 text-sm text-destructive">
-                  {error}
-                </p>
-              )}
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <p>
-                  {selected.filter((id) => gifts.some((g) => g.id === id && !g.reserved)).length}{" "}
-                  selected
-                </p>
-                <Button
-                  disabled={
-                    busy ||
-                    !selected.length ||
-                    catalog.isError ||
-                    selected.some((id) => gifts.some((g) => g.id === id && g.reserved))
-                  }
-                  onClick={reserve}
-                  className="bg-wine text-cream hover:bg-wine-deep"
-                >
-                  {busy ? "Reserving…" : "Reserve gifts"}
-                </Button>
+            {selected.length > 0 && (
+              <div className="sticky bottom-4 z-20 mt-10 border border-gold/30 bg-card/95 p-5 shadow-sm backdrop-blur sm:p-6">
+                {error && (
+                  <p role="alert" className="mb-3 text-sm text-destructive">
+                    {error}
+                  </p>
+                )}
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <p>
+                    {selected.filter((id) => gifts.some((g) => g.id === id && !g.reserved)).length}{" "}
+                    selected
+                  </p>
+                  <Button
+                    disabled={
+                      busy ||
+                      !selected.length ||
+                      catalog.isError ||
+                      selected.some((id) => gifts.some((g) => g.id === id && g.reserved))
+                    }
+                    onClick={reserve}
+                    className="bg-wine text-cream hover:bg-wine-deep"
+                  >
+                    {busy ? "Reserving…" : "Reserve gifts"}
+                  </Button>
+                </div>
+                {selected.some((id) => gifts.some((g) => g.id === id && g.reserved)) && (
+                  <Button
+                    variant="link"
+                    onClick={() =>
+                      setSelected((ids) =>
+                        ids.filter((id) => gifts.some((g) => g.id === id && !g.reserved)),
+                      )
+                    }
+                  >
+                    Remove unavailable gifts from selection
+                  </Button>
+                )}
               </div>
-              {selected.some((id) => gifts.some((g) => g.id === id && g.reserved)) && (
-                <Button
-                  variant="link"
-                  onClick={() =>
-                    setSelected((ids) =>
-                      ids.filter((id) => gifts.some((g) => g.id === id && !g.reserved)),
-                    )
-                  }
-                >
-                  Remove unavailable gifts from selection
-                </Button>
-              )}
-            </div>
+            )}
           </>
         )}
       </div>
     </GiftPage>
   );
 }
+
