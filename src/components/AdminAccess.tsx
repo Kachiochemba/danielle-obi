@@ -45,7 +45,7 @@ function SignIn() {
       <div className={box} role="status">
         <h1 className="text-center font-serif text-3xl text-wine">Check your email</h1>
         <p className="text-center text-sm text-muted-foreground">
-          If that address has usher access, a reset link is on its way. The link works once and
+          If that address has an account, a reset link is on its way. The link works once and
           expires after an hour.
         </p>
         <Button variant="outline" className="h-12 w-full" onClick={() => setMode("signin")}>
@@ -56,7 +56,7 @@ function SignIn() {
   if (mode === "forgot")
     return (
       <form onSubmit={forgot} className={box}>
-        <p className="eyebrow text-center text-muted-label">USHERS ONLY</p>
+        <p className="eyebrow text-center text-muted-label">STAFF ACCESS</p>
         <h1 className="text-center font-serif text-3xl text-wine">Reset password</h1>
         <div>
           <Label htmlFor="f-email">Email</Label>
@@ -83,7 +83,7 @@ function SignIn() {
     );
   return (
     <form onSubmit={submit} className={box}>
-      <p className="eyebrow text-center text-muted-label">USHERS ONLY</p>
+      <p className="eyebrow text-center text-muted-label">STAFF ACCESS</p>
       <h1 className="text-center font-serif text-3xl text-wine">Sign in</h1>
       <div>
         <Label htmlFor="a-email">Username or email</Label>
@@ -130,7 +130,14 @@ function SignIn() {
   );
 }
 
-export function AdminAccess({ children }: { children: React.ReactNode }) {
+type StaffAccess = { admin: boolean; usher: boolean };
+export function AdminAccess({
+  children,
+  allowUsher = false,
+}: {
+  children: React.ReactNode | ((access: StaffAccess) => React.ReactNode);
+  allowUsher?: boolean;
+}) {
   const [session, setSession] = useState<Session | null | undefined>(undefined);
   const qc = useQueryClient();
   useEffect(() => {
@@ -163,15 +170,19 @@ export function AdminAccess({ children }: { children: React.ReactNode }) {
         <SignIn />
       ) : admin.isLoading ? (
         <p className="mt-20 text-center text-muted-label">Checking access…</p>
-      ) : !admin.data?.admin ? (
+      ) : !(admin.data?.admin || (allowUsher && admin.data?.usher)) ? (
         <div className="mx-auto mt-20 max-w-sm text-center">
-          <p className="font-serif text-2xl text-wine">This account does not have usher access.</p>
+          <p className="font-serif text-2xl text-wine">
+            This account does not have access to this page.
+          </p>
           <Button variant="outline" className="mt-6" onClick={() => supabase.auth.signOut()}>
             Sign out
           </Button>
         </div>
       ) : (
-        <div className="mx-auto max-w-5xl">{children}</div>
+        <div className="mx-auto max-w-5xl">
+          {typeof children === "function" ? children(admin.data!) : children}
+        </div>
       )}
     </div>
   );
