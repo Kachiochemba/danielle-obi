@@ -108,14 +108,14 @@ function CalendarAction() {
 export function Details() {
   return (
     <div className="bg-surface pb-20">
-      <div className="relative mx-auto aspect-[4/5] max-h-[720px] w-full max-w-[1066px] overflow-hidden sm:aspect-[4/3]">
+      <div className="relative mx-auto aspect-[4/3] max-h-[560px] w-full overflow-hidden">
         <img
           src={ceremonyImage}
           alt="Danielle and Obi forehead to forehead on their wedding day"
           loading="lazy"
           width={1066}
           height={1280}
-          className="h-full w-full object-cover object-[center_40%]"
+          className="h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-image-shade" />
         <p className="absolute inset-x-5 bottom-10 text-center font-serif text-3xl italic text-cream">
