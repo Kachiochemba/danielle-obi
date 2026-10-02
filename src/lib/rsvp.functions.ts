@@ -20,6 +20,9 @@ export const submitRsvp = createServerFn({ method: "POST" })
       .select("id, full_name, email, guest_count, attending, confirmation_code")
       .single();
     if (error || !row) {
+      if (error?.code === "23505" && error.message.includes("rsvps_name_email_unique")) {
+        return { ok: false as const, duplicate: true as const };
+      }
       console.error("RSVP insert failed", error);
       return { ok: false as const };
     }

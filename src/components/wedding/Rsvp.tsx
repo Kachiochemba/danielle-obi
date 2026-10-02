@@ -10,6 +10,7 @@ import { Reveal, SectionTitle } from "./shared";
 
 export function Rsvp() {
   const [attending, setAttending] = useState(true);
+  const [duplicate, setDuplicate] = useState(false);
   const [status, setStatus] = useState<"idle" | "saving" | "success" | "error">("idle");
   const thankYouRef = useRef<HTMLHeadingElement>(null);
   const send = useServerFn(submitRsvp);
@@ -19,6 +20,7 @@ export function Rsvp() {
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (status === "saving") return;
+    setDuplicate(false);
     const form = new FormData(e.currentTarget);
     const fullName = String(form.get("name") ?? "").trim();
     const email = String(form.get("email") ?? "").trim();
@@ -41,7 +43,10 @@ export function Rsvp() {
       });
       if (res.ok) {
         setStatus("success");
-      } else setStatus("error");
+      } else {
+        setDuplicate("duplicate" in res && res.duplicate === true);
+        setStatus("error");
+      }
     } catch {
       setStatus("error");
     }
@@ -154,7 +159,9 @@ export function Rsvp() {
             </div>
             {status === "error" && (
               <p role="alert" className="text-sm text-destructive">
-                Please check your details and try again.
+                {duplicate
+                  ? "We've already received an RSVP with this name and email. Please check your inbox for your invitation."
+                  : "Please check your details and try again."}
               </p>
             )}
             <Button
