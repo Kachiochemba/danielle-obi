@@ -20,16 +20,6 @@
     "checkedAt": "2026-09-30"
   },
   {
-    "id": "carpet-extractor",
-    "name": "Carpet extractor",
-    "description": "20-litre wet and dry extractor with spray extraction for carpets and upholstery.",
-    "model": "20L Wet & Dry Carpet Extractor Vacuum Cleaner",
-    "price": 285000,
-    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/16/4902024/1.jpg?0433",
-    "sourceUrl": "https://www.jumia.com.ng/generic-20l-wet-dry-carpet-extractor-vacuum-cleaner-420209461.html",
-    "checkedAt": "2026-09-30"
-  },
-  {
     "id": "gas-cooker",
     "name": "Gas cooker",
     "description": "Aeon AGC5040J four-burner standing gas cooker, 50 × 50 cm.",
@@ -81,13 +71,13 @@
   },
   {
     "id": "toaster",
-    "name": "Toaster",
-    "description": "Maxi RP2L22W two-slice automatic pop-up toaster.",
-    "model": "Auto Pop-up Toaster 2 Slices - RP2L22W",
-    "price": 39999,
-    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/89/4784363/1.jpg?7029",
-    "sourceUrl": "https://www.jumia.com.ng/maxi-auto-pop-up-toaster-2-slices-rp2l22w-363487498.html",
-    "checkedAt": "2026-09-30"
+    "name": "Waffle, grill & sandwich maker",
+    "description": "Sokany 3-in-1 snack maker with interchangeable non-stick waffle, grill and sandwich plates.",
+    "model": "Sokany KJ-302 3-in-1 Waffle Maker, Grill & Sandwich Toaster",
+    "price": 34500,
+    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/98/4954153/1.jpg?0984",
+    "sourceUrl": "https://www.jumia.com.ng/sokany-3-in-1-waffle-maker-grill-toaster-sandwich-351459489.html",
+    "checkedAt": "2026-10-02"
   },
   {
     "id": "ac",
@@ -98,5 +88,55 @@
     "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/39/0913104/1.jpg?0992",
     "sourceUrl": "https://www.jumia.com.ng/aeon-1.5hp-split-inverter-air-conditioner-asa12ijj-with-free-installation-kit-2-year-warranty-white-401319093.html",
     "checkedAt": "2026-09-30"
+  },
+  {
+    "id": "thermal-fogger",
+    "name": "Thermal fogger",
+    "description": "Portable thermal fogging sprayer for agricultural fumigation and pest control.",
+    "model": "Agricultural Fumigation Portable Thermal Fogger Mist Fogging Machine Sprayer",
+    "price": 320000,
+    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/63/0729914/1.jpg?5899",
+    "sourceUrl": "https://www.jumia.com.ng/agricultural-fumigation-portable-thermal-fogger-mist-fogging-machine-sprayer-for-pest-control-generic-mpg12038833.html",
+    "checkedAt": "2026-10-02"
+  },
+  {
+    "id": "cookware-4-piece",
+    "name": "Pots & frying pan set",
+    "description": "Four-piece non-stick pots and frying pan set for everyday cooking.",
+    "model": "Generic 4-Piece Non-Stick Pots and Frying Pan",
+    "price": 62900,
+    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/29/8662024/1.jpg?2393",
+    "sourceUrl": "https://www.jumia.com.ng/generic-4-piece-non-stick-pots-and-frying-pan-420266892.html",
+    "checkedAt": "2026-10-02"
+  },
+  {
+    "id": "cookware-10-piece",
+    "name": "10-piece cookware set",
+    "description": "Addigoes stainless steel non-stick cookware set with five pots, five lids and heat-resistant handles.",
+    "model": "Addigoes 10-Piece Non-Stick Stainless Steel Cookware Set",
+    "price": 59999,
+    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/41/6130914/1.jpg?6168",
+    "sourceUrl": "https://www.jumia.com.ng/addigoes-10-piece-non-stick-stainless-steel-cookware-set-5-pots-5-lids-heat-resistant-handles-multi-functional-419031614.html",
+    "checkedAt": "2026-10-02"
+  },
+  {
+    "id": "food-processor",
+    "name": "Food processor",
+    "description": "RAF R.7032 1000W food processor with a 3-litre stainless steel bowl for chopping, mixing and blending.",
+    "model": "RAF R.7032 1000W Food Processor – 3L Stainless Steel Bowl",
+    "price": 33999,
+    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/45/8412814/1.jpg?2643",
+    "sourceUrl": "https://www.jumia.com.ng/raf-r.7032-1000w-food-processor-3l-capacity-with-stainless-steel-bowl-418214854.html",
+    "checkedAt": "2026-10-02"
+  },
+  {
+    "id": "smart-tv",
+    "name": "55-inch smart TV",
+    "description": "TCL 55V6B UHD 4K Google Smart TV with a 12-month warranty.",
+    "model": "TCL 55V6B 55-inch UHD 4K Google Smart TV",
+    "price": 449999,
+    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/84/5518204/1.jpg?8327",
+    "sourceUrl": "https://www.jumia.com.ng/tcl-55-inches-uhd-4k-google-smart-tv-12-months-warranty-402815548.html",
+    "checkedAt": "2026-10-02"
   }
 ]
