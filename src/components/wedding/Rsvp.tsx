@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Sparkles } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,11 +13,15 @@ import { Reveal, SectionTitle } from "./shared";
 export function Rsvp() {
   const [attending, setAttending] = useState(true);
   const [duplicate, setDuplicate] = useState(false);
+  const [giftPrompt, setGiftPrompt] = useState(false);
   const [status, setStatus] = useState<"idle" | "saving" | "success" | "error">("idle");
   const thankYouRef = useRef<HTMLHeadingElement>(null);
   const send = useServerFn(submitRsvp);
   useEffect(() => {
-    if (status === "success") thankYouRef.current?.focus({ preventScroll: true });
+    if (status !== "success") return;
+    thankYouRef.current?.focus({ preventScroll: true });
+    const timer = window.setTimeout(() => setGiftPrompt(true), 500);
+    return () => window.clearTimeout(timer);
   }, [status]);
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -42,6 +48,11 @@ export function Rsvp() {
         data: { fullName, email, guests, attending, notes: notes || undefined },
       });
       if (res.ok) {
+        try {
+          sessionStorage.setItem("gift-identity", JSON.stringify({ fullName, email }));
+        } catch {
+          /* The optional form still works without storage. */
+        }
         setStatus("success");
       } else {
         setDuplicate("duplicate" in res && res.duplicate === true);
@@ -52,127 +63,163 @@ export function Rsvp() {
     }
   }
   return (
-    <div className="bg-surface px-5 py-20 md:px-8">
-      <div className="mx-auto max-w-xl">
-        <Reveal>
-          <SectionTitle eyebrow="KINDLY RESPOND" title="RSVP" subtitle="We hope you can join us" />
-        </Reveal>
-        {status === "success" ? (
-          <div
-            role="status"
-            aria-live="polite"
-            className="border border-gold/35 bg-card px-6 py-14 text-center md:px-10 md:py-16"
-          >
-            <Sparkles className="mx-auto size-10 text-gold" />
-            <p className="eyebrow mt-6 text-muted-label">RESPONSE RECEIVED</p>
-            <h3
-              ref={thankYouRef}
-              tabIndex={-1}
-              className="mt-3 font-script text-6xl leading-none text-wine outline-none"
-            >
-              Thank you!
-            </h3>
-            <p className="mx-auto mt-5 max-w-sm font-serif text-lg leading-8 text-foreground/70">
-              {attending
-                ? "Thank you for celebrating with us. Your invitation will arrive by email."
-                : "We'll miss you, and we're grateful you let us know."}
-            </p>
-          </div>
-        ) : (
-          <form onSubmit={submit} className="space-y-5 border border-gold/25 bg-card p-6 md:p-8">
-            <div>
-              <Label htmlFor="name" className="eyebrow text-muted-label">
-                FULL NAME
-              </Label>
-              <Input
-                id="name"
-                name="name"
-                required
-                minLength={2}
-                maxLength={120}
-                className="mt-2 h-12 rounded-sm border-gold/30 bg-background"
-                placeholder="Your name"
-              />
-            </div>
-            <div>
-              <Label htmlFor="email" className="eyebrow text-muted-label">
-                EMAIL
-              </Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                required
-                maxLength={255}
-                autoComplete="email"
-                className="mt-2 h-12 rounded-sm border-gold/30 bg-background"
-                placeholder="you@example.com"
-              />
-            </div>
-            <div>
-              <Label htmlFor="guests" className="eyebrow text-muted-label">
-                NUMBER OF GUESTS
-              </Label>
-              <Input
-                id="guests"
-                name="guests"
-                required
-                type="number"
-                min={1}
-                max={10}
-                defaultValue={1}
-                className="mt-2 h-12 rounded-sm border-gold/30 bg-background"
-              />
-            </div>
-            <fieldset>
-              <legend className="eyebrow text-muted-label">ATTENDING?</legend>
-              <div className="mt-2 grid grid-cols-2 gap-2">
-                <Button
-                  type="button"
-                  variant={attending ? "default" : "outline"}
-                  onClick={() => setAttending(true)}
-                  className={`h-11 ${attending ? "bg-wine text-cream hover:bg-wine/90" : "border-gold/30"}`}
-                >
-                  Joyfully, yes
-                </Button>
-                <Button
-                  type="button"
-                  variant={!attending ? "default" : "outline"}
-                  onClick={() => setAttending(false)}
-                  className={`h-11 ${!attending ? "bg-wine text-cream hover:bg-wine/90" : "border-gold/30"}`}
-                >
-                  Sadly, no
-                </Button>
-              </div>
-            </fieldset>
-            <div>
-              <Label htmlFor="notes" className="eyebrow text-muted-label">
-                DIETARY NOTES · OPTIONAL
-              </Label>
-              <Textarea
-                id="notes"
-                name="notes"
-                maxLength={1000}
-                className="mt-2 min-h-28 rounded-sm border-gold/30 bg-background"
-                placeholder="Anything we should know?"
-              />
-            </div>
-            {status === "error" && (
-              <p role="alert" className="text-sm text-destructive">
-                {duplicate
-                  ? "We've already received an RSVP with this name and email. Please check your inbox for your invitation."
-                  : "Please check your details and try again."}
-              </p>
-            )}
-            <Button
-              disabled={status === "saving"}
-              className="h-13 w-full rounded-sm bg-wine text-cream hover:bg-wine/90"
-            >
-              {status === "saving" ? "SENDING…" : "SEND RSVP"}
+    <>
+      <Dialog open={giftPrompt} onOpenChange={setGiftPrompt}>
+        <DialogContent
+          className="w-[calc(100%-2rem)] rounded-sm border-gold/30 bg-card p-8 text-center duration-200 motion-reduce:animate-none"
+          onEscapeKeyDown={(e) => e.stopPropagation()}
+          onCloseAutoFocus={(e) => {
+            e.preventDefault();
+            thankYouRef.current?.focus({ preventScroll: true });
+          }}
+        >
+          <Sparkles className="mx-auto size-8 text-gold" />
+          <DialogTitle className="font-serif text-3xl font-normal text-wine">
+            A little love for our next chapter?
+          </DialogTitle>
+          <DialogDescription className="text-sm leading-7">
+            If you’d like, leave a prayer or kind wish, choose a gift, or send a little blessing.
+            It’s entirely optional—your love and support mean everything.
+          </DialogDescription>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            <Button variant="outline" onClick={() => setGiftPrompt(false)}>
+              No, thank you
             </Button>
-          </form>
-        )}
+            <Button asChild className="bg-wine text-cream hover:bg-wine-deep">
+              <Link to="/gifts">Yes, I’d love to</Link>
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+      <div className="bg-surface px-5 py-20 md:px-8">
+        <div className="mx-auto max-w-xl">
+          <Reveal>
+            <SectionTitle
+              eyebrow="KINDLY RESPOND"
+              title="RSVP"
+              subtitle="We hope you can join us"
+            />
+          </Reveal>
+          {status === "success" ? (
+            <div
+              role="status"
+              aria-live="polite"
+              className="border border-gold/35 bg-card px-6 py-14 text-center md:px-10 md:py-16"
+            >
+              <Sparkles className="mx-auto size-10 text-gold" />
+              <p className="eyebrow mt-6 text-muted-label">RESPONSE RECEIVED</p>
+              <h3
+                ref={thankYouRef}
+                tabIndex={-1}
+                className="mt-3 font-script text-6xl leading-none text-wine outline-none"
+              >
+                Thank you!
+              </h3>
+              <p className="mx-auto mt-5 max-w-sm font-serif text-lg leading-8 text-foreground/70">
+                {attending
+                  ? "Thank you for celebrating with us. Your invitation will arrive by email."
+                  : "We'll miss you, and we're grateful you let us know."}
+              </p>
+              <Button asChild variant="outline" className="mt-6">
+                <Link to="/gifts">Leave a wish or gift</Link>
+              </Button>
+            </div>
+          ) : (
+            <form onSubmit={submit} className="space-y-5 border border-gold/25 bg-card p-6 md:p-8">
+              <div>
+                <Label htmlFor="name" className="eyebrow text-muted-label">
+                  FULL NAME
+                </Label>
+                <Input
+                  id="name"
+                  name="name"
+                  required
+                  minLength={2}
+                  maxLength={120}
+                  className="mt-2 h-12 rounded-sm border-gold/30 bg-background"
+                  placeholder="Your name"
+                />
+              </div>
+              <div>
+                <Label htmlFor="email" className="eyebrow text-muted-label">
+                  EMAIL
+                </Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  maxLength={255}
+                  autoComplete="email"
+                  className="mt-2 h-12 rounded-sm border-gold/30 bg-background"
+                  placeholder="you@example.com"
+                />
+              </div>
+              <div>
+                <Label htmlFor="guests" className="eyebrow text-muted-label">
+                  NUMBER OF GUESTS
+                </Label>
+                <Input
+                  id="guests"
+                  name="guests"
+                  required
+                  type="number"
+                  min={1}
+                  max={10}
+                  defaultValue={1}
+                  className="mt-2 h-12 rounded-sm border-gold/30 bg-background"
+                />
+              </div>
+              <fieldset>
+                <legend className="eyebrow text-muted-label">ATTENDING?</legend>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  <Button
+                    type="button"
+                    variant={attending ? "default" : "outline"}
+                    onClick={() => setAttending(true)}
+                    className={`h-11 ${attending ? "bg-wine text-cream hover:bg-wine/90" : "border-gold/30"}`}
+                  >
+                    Joyfully, yes
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={!attending ? "default" : "outline"}
+                    onClick={() => setAttending(false)}
+                    className={`h-11 ${!attending ? "bg-wine text-cream hover:bg-wine/90" : "border-gold/30"}`}
+                  >
+                    Sadly, no
+                  </Button>
+                </div>
+              </fieldset>
+              <div>
+                <Label htmlFor="notes" className="eyebrow text-muted-label">
+                  DIETARY NOTES · OPTIONAL
+                </Label>
+                <Textarea
+                  id="notes"
+                  name="notes"
+                  maxLength={1000}
+                  className="mt-2 min-h-28 rounded-sm border-gold/30 bg-background"
+                  placeholder="Anything we should know?"
+                />
+              </div>
+              {status === "error" && (
+                <p role="alert" className="text-sm text-destructive">
+                  {duplicate
+                    ? "We've already received an RSVP with this name and email. Please check your inbox for your invitation."
+                    : "Please check your details and try again."}
+                </p>
+              )}
+              <Button
+                disabled={status === "saving"}
+                className="h-13 w-full rounded-sm bg-wine text-cream hover:bg-wine/90"
+              >
+                {status === "saving" ? "SENDING…" : "SEND RSVP"}
+              </Button>
+            </form>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
