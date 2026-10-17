@@ -1,0 +1,2 @@
+-- Add requested gifts without altering existing reservations or gift availability.
+INSERT INTO public.gift_catalog(id,name,active) VALUES ('coffee-machine','Coffee machine with grinder',true),('aeitto-juicer','3-in-1 cold press juicer',true),('whiskey-glasses','Whiskey glasses & ice mold',true),('indoor-grill','Indoor searing grill',true),('spice-rack','20-jar revolving spice rack',true) ON CONFLICT(id) DO NOTHING;

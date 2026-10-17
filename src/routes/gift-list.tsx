@@ -84,7 +84,8 @@ function GiftList() {
                         rel="noopener noreferrer"
                         className="text-wine underline"
                       >
-                        View {item.name} on Jumia
+                        View {item.name} on{" "}
+                        {g.sourceUrl.includes("amazon.com/") ? "Amazon" : "Jumia"}
                       </a>
                     )}
                   </li>
@@ -135,14 +136,16 @@ function GiftList() {
                       <div className="flex flex-1 flex-col gap-4 p-6">
                         <h2 className="font-serif text-2xl text-wine">{g.name}</h2>
                         <p className="text-sm leading-6 text-foreground/75">{g.description}</p>
-                        <p className="font-semibold text-wine">{naira(g.price)}</p>
+                        <p className="font-semibold text-wine">
+                          {g.price === null ? "See current price on Amazon" : naira(g.price)}
+                        </p>
                         <a
                           href={g.sourceUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-sm text-wine underline"
                         >
-                          View on Jumia
+                          View on {g.sourceUrl.includes("amazon.com/") ? "Amazon" : "Jumia"}
                         </a>
                         <label
                           className={`mt-2 flex min-h-12 items-center gap-3 rounded-md border p-3 ${g.reserved ? "cursor-not-allowed" : "cursor-pointer"}`}
@@ -168,7 +171,7 @@ function GiftList() {
               </div>
             )}
             <p className="mt-8 text-center text-xs leading-6 text-foreground/65">
-              Prices are indicative. See Jumia for current prices and delivery.
+              Prices are indicative. See the retailer for current prices and delivery.
             </p>
             {selected.length > 0 && (
               <div className="sticky bottom-4 z-20 mt-10 border border-gold/30 bg-card/95 p-5 shadow-sm backdrop-blur sm:p-6">
@@ -215,4 +218,3 @@ function GiftList() {
     </GiftPage>
   );
 }
-

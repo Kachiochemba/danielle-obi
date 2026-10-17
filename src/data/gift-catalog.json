@@ -128,5 +128,55 @@
     "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/84/5518204/1.jpg?8327",
     "sourceUrl": "https://www.jumia.com.ng/tcl-55-inches-uhd-4k-google-smart-tv-12-months-warranty-402815548.html",
     "checkedAt": "2026-10-02"
+  },
+  {
+    "id": "coffee-machine",
+    "name": "Coffee machine with grinder",
+    "description": "Ambiano coffee machine with a built-in grinder and 900–1050W power.",
+    "model": "Ambiano Coffee Machine With Grinder-900-1050W",
+    "price": 260000,
+    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/42/6897814/1.jpg?0894",
+    "sourceUrl": "https://www.jumia.com.ng/ambiano-coffee-machine-with-grinder-900-1050w-418798624.html",
+    "checkedAt": "2026-10-17"
+  },
+  {
+    "id": "aeitto-juicer",
+    "name": "3-in-1 cold press juicer",
+    "description": "Aeitto juicer for juice, sorbet and nut milk, with a wide feed chute and mesh-free cleaning.",
+    "model": "Aeitto 3-in-1 Juicer Machines, 6.0\" Wide Mouth",
+    "price": null,
+    "image": "https://m.media-amazon.com/images/I/71gWv8DTpYL._AC_SL1500_.jpg",
+    "sourceUrl": "https://www.amazon.com/dp/B0H2GXFR7S",
+    "checkedAt": "2026-10-17"
+  },
+  {
+    "id": "whiskey-glasses",
+    "name": "Whiskey glasses & ice mold",
+    "description": "Set of six spinning rocks glasses with an ice mold for serving your favourite drinks.",
+    "model": "Spinning Whiskey Glasses Set of 6, Old Fashioned Rocks Glass, with Ice Mold",
+    "price": null,
+    "image": "https://m.media-amazon.com/images/I/91HV+WeOh9L._AC_SL1500_.jpg",
+    "sourceUrl": "https://www.amazon.com/dp/B0H21B7TJC",
+    "checkedAt": "2026-10-17"
+  },
+  {
+    "id": "indoor-grill",
+    "name": "Indoor searing grill",
+    "description": "Hamilton Beach electric indoor grill with adjustable temperature control and a removable non-stick grate.",
+    "model": "Hamilton Beach Electric Indoor Searing Grill 25360",
+    "price": null,
+    "image": "https://m.media-amazon.com/images/I/814NwGGRjtL._AC_SL1500_.jpg",
+    "sourceUrl": "https://www.amazon.com/dp/B00F0RBF3E",
+    "checkedAt": "2026-10-17"
+  },
+  {
+    "id": "spice-rack",
+    "name": "20-jar revolving spice rack",
+    "description": "Kamenstein revolving countertop rack with 20 spice jars and a polished stainless steel finish.",
+    "model": "Kamenstein 20 Jar Revolving Countertop Spice Rack 30020",
+    "price": null,
+    "image": "https://m.media-amazon.com/images/I/71AiuQKcleL._AC_SL1500_.jpg",
+    "sourceUrl": "https://www.amazon.com/dp/B00008WQ3L",
+    "checkedAt": "2026-10-17"
   }
 ]
